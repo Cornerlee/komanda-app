@@ -310,6 +310,9 @@ p{margin:0}
 .li .chev{color:var(--dim);width:18px;height:18px}
 .li .val{color:var(--mute);font-size:13px;font-weight:600}
 .badge-n{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--magenta);color:#fff;font-size:11.5px;font-weight:800;display:grid;place-items:center}
+.demo-box{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:rgba(255,181,71,.12);border:1px solid rgba(255,181,71,.35);color:var(--fg);font-size:13.5px;font-weight:600;text-align:left;line-height:1.4}
+.demo-box .ic{color:var(--warn);width:20px;height:20px;margin-top:1px}
+.demo-tag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 7px;border-radius:6px;background:rgba(255,181,71,.14);color:var(--warn);white-space:nowrap}
 .demo-note{margin-top:24px;padding:14px;border-radius:16px;background:var(--s1);border:1px dashed var(--s3);font-size:12.5px;color:var(--mute)}
 
 /* layers: pages + sheets */
@@ -778,6 +781,10 @@ function openInstall(){
   open('sheet', `${sheetHead('Установить приложение')}<div class="scroll g"><p class="mute">Приложение появится на рабочем столе с иконкой «Команды Первых» и будет открываться на весь экран.</p><ol class="steps-i" style="padding:0">${steps.map(t => `<li>${esc(t)}</li>`).join('')}</ol></div><div class="footer g"><button class="btn block ghost" data-act="close">Понятно</button></div>`);
 }
 
+const DEMO = 'Недоступно в демо-версии';
+const demoBox = t => `<div class="demo-box">${ic('help')}<span>${t}</span></div>`;
+const demoToast = (what = '') => toast(what ? `${what}: недоступно в демо-версии` : DEMO);
+
 // ---------- MAIN ----------
 const TABS = [['home','Главная','grid'],['chall','Челленджи','trophy'],['sched','Расписание','cal'],['coach','Тренеры','users'],['me','Профиль','user']];
 function renderMain(keepScroll){
@@ -995,6 +1002,7 @@ function openClass(id){
       <div class="sumrow"><span>Зал</span><b>${esc(x.room)}</b></div>
       <div class="sumrow"><span>Клуб</span><b>${esc(CLUBS[x.clubId].name)}, ${esc(CLUBS[x.clubId].short)}</b></div>
       <div class="sumrow"><span>Записано</span><b class="num">${x.booked} из ${x.cap}</b></div>
+      <div style="margin-top:12px">${demoBox('Демо-версия: расписание вымышленное, запись в клуб не передаётся.')}</div>
       <p style="margin-top:14px;color:var(--mute)">${esc(x.desc)}</p>
     </div>
     <div class="footer g">${action}</div>`);
@@ -1028,6 +1036,7 @@ function openTrainer(tid){
         <div class="row" style="justify-content:center;flex-wrap:wrap;gap:8px"><span class="pill info">${DEPT[x.dept]}</span><span class="pill plain" style="background:var(--s2)">${rub(x.price)} / 60 мин</span></div>
       </div>
       <div class="g" style="margin-top:20px"><p class="mute">${esc(DEPT_ABOUT[x.dept])}</p></div>
+      <div class="g" style="margin-top:14px">${demoBox('Демо-версия: окна тренера и цены вымышленные, запись в клуб не передаётся.')}</div>
       <section class="sec g"><h2 class="h2">Свободное время</h2>
         ${slots.map(d => `<div><div class="small mute" style="margin-bottom:8px;font-weight:700">${d.off === 0 ? 'Сегодня' : d.off === 1 ? 'Завтра' : DOWL[d.d.getDay()]}, ${dfmt(d.d)}</div>
           <div class="row" style="flex-wrap:wrap;gap:8px">${d.s.length ? d.s.map(t => `<button class="chip slot" data-key="${iso(d.d)}" data-t="${t}">${t}</button>`).join('') : '<span class="small dim">Нет свободных окон</span>'}</div></div>`).join('')}
@@ -1135,6 +1144,7 @@ function openQR(){
       </div>
       <div><b style="font-size:17px">${esc(u.first)} ${esc(u.last || '')}</b><div class="small mute">${esc(S.contract.name)} · клиент ${esc(u.id)}</div></div>
       <p class="hint" style="max-width:30ch">Поднесите экран к сканеру турникета. Яркость экрана лучше увеличить.</p>
+      ${demoBox('Вход по QR недоступен в демо-версии: турникет этот код не примет.')}
     </div>`;
   open('sheet', html, el => {
     const draw = () => {
@@ -1168,7 +1178,7 @@ function openShop(tab){
     : `<div class="grid2">${MINI[S.clubId].map(m => { const joined = S.minis.includes(m.id); return `<button class="prod" data-act="miniOpen" data-id="${m.id}"><div class="art tone-${m.tone}">${ic(m.icon)}<span class="spots">${joined ? 'Вы в группе' : `осталось ${m.spots} ${plural(m.spots,['место','места','мест'])}`}</span></div><div class="info"><b>${esc(m.n)}</b><small>${esc(m.when)}<br>${esc(m.start)}</small><div class="pr num">${rub(m.price)} <span>/ ${esc(m.per)}</span></div></div></button>`; }).join('')}</div>`;
   const el = open('page', `${pageHead(`${c.short}`)}
     <div class="g" style="padding-bottom:12px"><div class="seg"><button data-tab="shop" class="${UI.shopTab === 'shop' ? 'on' : ''}">Магазин</button><button data-tab="mini" class="${UI.shopTab === 'mini' ? 'on' : ''}">Мини-группы</button></div></div>
-    <div class="scroll g" id="shopBody">${body()}</div>`, el => {
+    <div class="scroll g"><div style="margin-bottom:12px">${demoBox('Демо-версия: товары и цены для примера, заказ в клуб не передаётся.')}</div><div id="shopBody">${body()}</div></div>`, el => {
     el.addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (!b) return; UI.shopTab = b.dataset.tab; el.querySelectorAll('[data-tab]').forEach(x => x.classList.toggle('on', x === b)); $('#shopBody', el).innerHTML = body(); });
   });
   el._rerender = () => { $('#shopBody', el).innerHTML = body(); };
@@ -1229,7 +1239,7 @@ function payFlow(amount, done){
         <button class="btn block" data-pay>${ic('card')} Банковской картой</button>
         <button class="btn block ghost" data-pay>Через СБП</button>
       </div>
-      <p class="hint" style="margin-top:14px;text-align:center">Демо: деньги не списываются. В рабочей версии здесь будет платёжная форма эквайринга клуба.</p>
+      <div style="margin-top:14px">${demoBox('Оплата недоступна в демо-версии: деньги не списываются, покупка оформится для примера.')}</div>
     </div>`, el => {
     el.addEventListener('click', e => { const b = e.target.closest('[data-pay]'); if (!b || b.disabled) return; el.querySelectorAll('[data-pay]').forEach(x => x.disabled = true); b.innerHTML = '<span class="spin"></span>'; setTimeout(done, 900); });
   });
@@ -1265,6 +1275,7 @@ function openLocker(){
   const busy = n => rng(st.zone + S.clubId + iso(T0) + n)() < .45;
   const cells = () => Array.from({ length:48 }, (_, i) => i + 1).map(n => `<button class="cell num ${busy(n) ? 'busy' : ''} ${st.num === n ? 'on' : ''}" ${busy(n) ? 'disabled aria-disabled="true"' : ''} data-n="${n}">${n}</button>`).join('');
   open('page', `${pageHead('Мой шкафчик')}<div class="scroll g">
+      ${demoBox('Бронирование шкафчика недоступно в демо-версии — ячейка не закрепляется в клубе.')}
       <div class="empty" style="padding:20px 0 24px">${ic('lock')}<b>У вас нет шкафчика</b><span>Забронируйте именной шкафчик, чтобы не носить вещи с собой</span></div>
       <div class="stack">
         <div class="field"><label>Раздевалка</label><div class="seg" id="lz">${zones.map(z => `<button data-z="${z}" class="${z === st.zone ? 'on' : ''}">${z}</button>`).join('')}</div></div>
@@ -1299,6 +1310,7 @@ function openFreeze(){
   let days = Math.min(14, max), from = iso(addDays(T0, 1));
   open('page', `${pageHead('Заморозка')}<div class="scroll g stack" style="padding-top:8px">
       <p class="mute">Доступно ${max} ${plural(max,['день','дня','дней'])}. Срок абонемента продлится на время заморозки.</p>
+      ${demoBox('Заморозка недоступна в демо-версии — в клубе абонемент не заморозится.')}
       <div class="field"><label for="fz-from">Начало</label><input class="input" type="date" id="fz-from" min="${iso(T0)}" max="${c.end}" value="${from}"></div>
       <div class="field"><label for="fz-days">Длительность: <b id="fzd" class="num" style="color:var(--fg)">${days}</b> дн.</label><input type="range" id="fz-days" min="${min}" max="${max}" value="${days}" style="accent-color:var(--blue);width:100%"></div>
       <div class="card"><div class="sumrow"><span>Заморожен до</span><b id="fzto"></b></div><div class="sumrow" style="border:0"><span>Новый срок окончания</span><b id="fzend"></b></div></div>
@@ -1354,7 +1366,7 @@ function openInvite(){
   open('page', `${pageHead('Пригласи друзей')}<div class="scroll g stack" style="padding-top:12px">
     <div class="contract" style="background:var(--magenta);border:0;color:#fff"><div class="cname">Месяц фитнеса другу</div><p style="opacity:.9">Друг получает месяц в подарок, вы — 1 000 баллов, когда он оформит абонемент.</p></div>
     <div class="field"><label>Ваш промокод</label><div class="row"><div class="input grow" style="display:flex;align-items:center;font-family:var(--f-display);letter-spacing:.06em">${esc(code)}</div><button class="btn ghost" data-act="copy" data-v="${esc(code)}">${ic('copy')}</button></div></div>
-    <p class="hint">Друг вводит промокод при регистрации в приложении или называет его менеджеру в клубе.</p></div>`);
+    <p class="hint">Друг вводит промокод при регистрации в приложении или называет его менеджеру в клубе.</p>${demoBox('Промокоды недоступны в демо-версии: код показан для примера и не сработает.')}</div>`);
 }
 function openFAQ(){
   const qa = [
@@ -1371,6 +1383,7 @@ function openFAQ(){
 function openReview(){
   let stars = 0; const c = club();
   open('page', `${pageHead('Оставить отзыв')}<div class="scroll g stack" style="padding-top:12px">
+    ${demoBox('Отправка отзыва в клуб недоступна в демо-версии. Отзыв на Яндекс Картах — настоящий.')}
     <p class="mute" style="text-align:center">Как вам ${esc(c.name)} в ${c.id === 'kp' ? 'Королёве' : 'Ховрино'}?</p>
     <div class="stars" id="st">${[1,2,3,4,5].map(n => `<button data-s="${n}" aria-label="${n} из 5">${ic('star')}</button>`).join('')}</div>
     <div class="field"><label for="rv">Что понравилось, что улучшить</label><textarea class="input" id="rv" placeholder="Например: чистый бассейн, хотелось бы больше утренних занятий"></textarea></div>
@@ -1378,7 +1391,7 @@ function openReview(){
     </div><div class="footer g"><button class="btn block club" id="rvgo" disabled>Отправить</button></div>`, el => {
     el.addEventListener('click', e => {
       const s = e.target.closest('[data-s]'); if (s){ stars = +s.dataset.s; el.querySelectorAll('[data-s]').forEach(b => b.classList.toggle('on', +b.dataset.s <= stars)); $('#rvgo', el).disabled = false; }
-      if (e.target.closest('#rvgo') && stars){ notify('Спасибо за отзыв', `Оценка ${stars} из 5 передана управляющему клуба`); save(); close(); toast('Отзыв отправлен'); }
+      if (e.target.closest('#rvgo') && stars){ demoToast('Отправка отзыва'); }
     });
   });
 }
@@ -1402,14 +1415,14 @@ function openContacts(id){
 function openChat(){
   if (!S.chat.length) S.chat.push({ from:'club', text:`Здравствуйте! Я менеджер клуба «${club().name}». Помогу с абонементом, заморозкой и записью — пишите.`, d:Date.now() });
   const msgs = () => S.chat.map(m => `<div class="msg ${m.from}">${esc(m.text)}<small>${new Date(m.d).toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' })}</small></div>`).join('');
-  open('page', `${pageHead('Менеджер клуба')}<div class="scroll g" id="cs"><div class="msgs" id="ms">${msgs()}</div></div>
+  open('page', `${pageHead('Менеджер клуба')}<div class="scroll g" id="cs">${demoBox('Чат с менеджером недоступен в демо-версии: сообщения не доходят до клуба, ответ приходит автоматически.')}<div class="msgs" id="ms">${msgs()}</div></div>
     <div class="footer g"><form class="composer" id="cf"><input class="input" id="ci" placeholder="Сообщение" autocomplete="off" aria-label="Сообщение"><button class="send" aria-label="Отправить">${ic('send')}</button></form></div>`, el => {
     const sc = $('#cs', el); const down = () => sc.scrollTop = sc.scrollHeight; down();
     let t;
     $('#cf', el).addEventListener('submit', e => {
       e.preventDefault(); const v = $('#ci', el).value.trim(); if (!v) return;
       S.chat.push({ from:'me', text:v, d:Date.now() }); $('#ci', el).value = ''; $('#ms', el).innerHTML = msgs(); down(); save();
-      t = setTimeout(() => { S.chat.push({ from:'club', text:'Спасибо, сообщение получили. Менеджер ответит в течение 15 минут в рабочее время клуба.', d:Date.now() }); save(); if ($('#ms', el)){ $('#ms', el).innerHTML = msgs(); down(); } }, 1200);
+      t = setTimeout(() => { S.chat.push({ from:'club', text:'Это автоматический ответ демо-версии. В рабочей версии здесь ответит менеджер клуба.', d:Date.now() }); save(); if ($('#ms', el)){ $('#ms', el).innerHTML = msgs(); down(); } }, 1200);
     });
     return () => clearTimeout(t);
   });
@@ -1444,8 +1457,7 @@ function renderOnb(){
   const f = { club:obClub, contract:obContract, data:obData, contact:obContact, code:obCode, pay:obPay }[s];
   screen.innerHTML = head + f();
   if (s === 'contract'){ const list = CONTRACTS[O.club]; mountPicker(screen, list, O.ci, k => { O.ci = k; const c = list[k]; $('#obPrice').textContent = priceLabel(c); $('#obSub').textContent = c.price === null ? 'Условия подберёт менеджер' : c.unit === '₽/мес' ? 'Первый платёж' : c.price === 0 ? 'Без оплаты' : 'Единый платёж'; }); }
-  if (s === 'code' && O.sent) startResend();
-  const inp = screen.querySelector('input'); if (inp && s !== 'data') setTimeout(() => inp.focus({ preventScroll:true }), 250);
+  const inp = screen.querySelector('input:not([disabled])'); if (inp && s !== 'data') setTimeout(() => inp.focus({ preventScroll:true }), 250);
 }
 function obSplash(){
   screen.innerHTML = `<div class="ob-splash g">
@@ -1494,6 +1506,7 @@ function obContact(){
     ${login ? '' : `<div class="field"><label for="f-email">Email</label><input class="input" id="f-email" type="email" autocomplete="email" placeholder="yourname@mail.ru" value="${esc(O.f.email)}"></div>`}
     <div class="field"><label for="f-phone">Телефон</label><input class="input num" id="f-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 900 000-00-00" value="${esc(O.f.phone)}"></div>
     <p class="hint">Укажите номер, на который сможете получить СМС с кодом подтверждения.</p>
+    ${demoBox('Демо-версия: можно ввести любой номер — СМС отправляться не будет.')}
     <div class="err" id="f-err"></div></div>
     <div class="footer g">${login ? '<button class="btn block" data-act="obNext">Получить код</button>' : obFooterPrice()}</div>`;
 }
@@ -1501,11 +1514,11 @@ function obCode(){
   return `<div class="scroll g stack" style="align-items:center;text-align:center">
     <div class="icon-btn" style="width:72px;height:72px;border-radius:50%;background:var(--club);color:var(--club-ink);margin-top:12px">${ic('phone')}</div>
     <h1 class="h1">Подтвердите телефон</h1>
-    <p class="mute" style="max-width:30ch">${O.sent ? `Мы отправили код на <b style="color:var(--fg)">${esc(O.f.phone)}</b>` : `Отправим СМС с кодом на <b style="color:var(--fg)">${esc(O.f.phone)}</b>`}</p>
-    ${O.sent ? `<input class="input code num" id="f-code" inputmode="numeric" maxlength="4" autocomplete="one-time-code" aria-label="Код из СМС" placeholder="····">
-    <p class="hint">Демо: подойдёт любой код из 4 цифр</p><div class="err" id="f-err"></div>
-    <button class="link" id="resend" data-act="obResend" disabled>Отправить ещё раз через 59 с</button>` : ''}
-    </div><div class="footer g"><button class="btn block" data-act="${O.sent ? 'obVerify' : 'obSend'}">${O.sent ? 'Подтвердить' : 'Отправить код'}</button></div>`;
+    <p class="mute" style="max-width:30ch">В рабочей версии на <b style="color:var(--fg)">${esc(O.f.phone)}</b> придёт СМС с кодом.</p>
+    ${demoBox('Это демо-версия — СМС с кодом не придёт. Нажмите «Пропустить», чтобы продолжить.')}
+    <input class="input code num" id="f-code" inputmode="numeric" maxlength="4" autocomplete="one-time-code" aria-label="Код из СМС" placeholder="····" disabled style="opacity:.45">
+    <span class="demo-tag">Ввод кода — ${DEMO.toLowerCase()}</span>
+    </div><div class="footer g"><button class="btn block" data-act="obSkipCode">Пропустить</button></div>`;
 }
 function startResend(){ let n = 59; const b = $('#resend'); TIMERS.push(setInterval(() => { n--; if (!b) return; if (n <= 0){ b.disabled = false; b.textContent = 'Отправить код ещё раз'; clearTimers(); } else b.textContent = `Отправить ещё раз через ${n} с`; }, 1000)); }
 function obPay(){
@@ -1517,7 +1530,8 @@ function obPay(){
     <div class="sumrow"><span>${lead ? 'Стоимость' : c.unit === '₽/мес' ? 'Первый платёж' : 'К оплате'}</span><b class="num">${esc(priceLabel(c))}</b></div>
     ${c.unit === '₽/мес' ? '<div class="sumrow"><span>Далее</span><b>ежемесячно, рассрочка 0%</b></div>' : ''}
     <div class="sumrow"><span>Клиент</span><b>${esc(O.f.name)}<br><span class="small mute num">${esc(O.f.phone)}</span></b></div>
-    <p class="hint" style="margin-top:14px">${lead ? 'Менеджер клуба позвонит и подберёт условия. Заявка попадёт в CRM клуба.' : c.price === 0 ? 'Возьмите паспорт: администратор подтвердит данные и активирует пропуск.' : 'Демо: деньги не списываются. В рабочей версии — платёжная форма эквайринга клуба.'}</p>
+    <p class="hint" style="margin-top:14px">${lead ? 'Менеджер клуба позвонит и подберёт условия.' : c.price === 0 ? 'Возьмите паспорт: администратор подтвердит данные и активирует пропуск.' : ''}</p>
+    <div style="margin-top:12px">${demoBox(lead ? 'Отправка заявки менеджеру недоступна в демо-версии — заявка сохранится только в приложении.' : c.price === 0 ? 'Запись на визит в демо-версии не передаётся в клуб.' : 'Оплата недоступна в демо-версии: деньги не списываются.')}</div>
     </div><div class="footer g stack">${lead ? '<button class="btn block" data-act="obFinish">Отправить заявку</button>' : c.price === 0 ? '<button class="btn block" data-act="obFinish">Записаться на визит</button>' : `<button class="btn block" data-act="obFinish" data-pay="1">${ic('card')} Оплатить ${rub(c.price)}</button><button class="btn block ghost" data-act="obFinish" data-pay="1">Через СБП</button>`}</div>`;
 }
 const phoneOk = p => p.replace(/\D/g,'').length >= 11;
@@ -1589,7 +1603,7 @@ const ACT = {
   cls: d => openClass(d.id),
   book: d => { const x = findClass(d.id); if (!x) return; S.bookings.push({ id:x.id, type:'cls', key:x.key, t:x.t, name:x.n, sub:`${x.trainer.name} · ${x.room}`, club:x.clubId }); notify('Вы записаны', `${x.n}, ${dfmt(x.date)} в ${x.t}`); save(); close(); toast(`Записали: ${x.n}, ${x.t}`); refresh(); },
   unbook: d => { S.bookings = S.bookings.filter(b => b.id !== d.id); save(); close(); toast('Запись отменена'); refresh(); },
-  waitlist: d => { close(); toast('Вы в листе ожидания — сообщим, если место освободится'); },
+  waitlist: d => demoToast('Лист ожидания'),
   ptInfo: d => { const b = S.bookings.find(x => x.id === d.id); if (!b) return; open('sheet', `${sheetHead('Персональная тренировка')}<div class="scroll g"><h3 class="h3">${esc(TR[b.tid].name)}</h3><div class="sumrow"><span>Когда</span><b>${dfmt(parse(b.key))}, ${b.t}</b></div><div class="sumrow"><span>Клуб</span><b>${esc(CLUBS[b.club].name)}</b></div></div><div class="footer g"><button class="btn block danger" data-act="unbookPt" data-id="${esc(b.id)}">Отменить тренировку</button></div>`); },
   unbookPt: d => { S.bookings = S.bookings.filter(b => b.id !== d.id); if (S.contract && S.contract.ptLeft < (contractDef(S.contract.id)?.pt || 0)) S.contract.ptLeft += 1; save(); close(); toast('Тренировка отменена'); refresh(); },
   trainer: d => { close(true); openTrainer(d.id); },
@@ -1603,13 +1617,13 @@ const ACT = {
   product: d => openProduct(d.id),
   miniOpen: d => openMini(d.id),
   copy: (d) => { const v = d.v; const ok = () => toast('Скопировано'); try { navigator.clipboard.writeText(v).then(ok, () => toast(v)); } catch (e) { toast(v); } },
-  payMethod: () => openSimple('Способ оплаты', `<div class="empty">${ic('card')}<b>Карта не привязана</b><span>Привяжите карту, чтобы ежемесячные платежи по рассрочке списывались автоматически</span></div>`, `<button class="btn block" data-act="payBind">Привязать карту</button>`),
-  payBind: () => toast('Привязка карты появится после подключения эквайринга'),
-  privacy: () => { open('page', `${pageHead('Уведомления и приватность')}<div class="scroll g">${[['push','Пуш-уведомления','Записи, напоминания о занятиях, абонемент'],['sms','СМС об акциях','Спецпредложения клуба'],['visible','Показывать меня в «Кто в клубе»','Другие клиенты увидят ваш инициал']].map(([k, t, s]) => `<button class="li" data-pref="${k}"><span class="grow">${t}<br><span class="small mute" style="font-weight:500">${s}</span></span><span class="switch ${S.prefs[k] ? 'on' : ''}"></span></button>`).join('')}</div>`, el => { el.addEventListener('click', e => { const b = e.target.closest('[data-pref]'); if (!b) return; const k = b.dataset.pref; S.prefs[k] = !S.prefs[k]; b.querySelector('.switch').classList.toggle('on', S.prefs[k]); save(); }); }); },
-  lang: () => openSimple('Язык', `<button class="li">${ic('check')}<span class="grow">Русский</span></button><button class="li" data-act="langEn"><span style="width:22px"></span><span class="grow">English</span><span class="val">скоро</span></button>`),
-  langEn: () => toast('Английская версия появится позже'),
-  deleteAcc: () => openSimple('Удалить аккаунт', `<p class="mute" style="padding-top:12px">Мы удалим профиль в приложении. Договор и абонемент в клубе останутся действующими — их закрывает менеджер по заявлению.</p>`, `<button class="btn block danger" data-act="deleteGo">Отправить запрос на удаление</button>`),
-  deleteGo: () => { close(); toast('Запрос отправлен. Менеджер свяжется в течение 3 дней'); },
+  payMethod: () => openSimple('Способ оплаты', `<div class="empty">${ic('card')}<b>Карта не привязана</b><span>Привяжите карту, чтобы ежемесячные платежи по рассрочке списывались автоматически</span></div>`, `${demoBox('Привязка карты недоступна в демо-версии.')}<button class="btn block" data-act="payBind" style="margin-top:12px">Привязать карту</button>`),
+  payBind: () => demoToast('Привязка карты'),
+  privacy: () => { open('page', `${pageHead('Уведомления и приватность')}<div class="scroll g">${demoBox('Пуш-уведомления и СМС недоступны в демо-версии — настройки сохраняются только для примера.')}${[['push','Пуш-уведомления','Записи, напоминания о занятиях, абонемент'],['sms','СМС об акциях','Спецпредложения клуба'],['visible','Показывать меня в «Кто в клубе»','Другие клиенты увидят ваш инициал']].map(([k, t, s]) => `<button class="li" data-pref="${k}"><span class="grow">${t}<br><span class="small mute" style="font-weight:500">${s}</span></span><span class="switch ${S.prefs[k] ? 'on' : ''}"></span></button>`).join('')}</div>`, el => { el.addEventListener('click', e => { const b = e.target.closest('[data-pref]'); if (!b) return; const k = b.dataset.pref; S.prefs[k] = !S.prefs[k]; b.querySelector('.switch').classList.toggle('on', S.prefs[k]); save(); }); }); },
+  lang: () => openSimple('Язык', `<button class="li">${ic('check')}<span class="grow">Русский</span></button><button class="li" data-act="langEn"><span style="width:22px"></span><span class="grow">English</span><span class="demo-tag">недоступно в демо</span></button>`),
+  langEn: () => demoToast('Английский язык'),
+  deleteAcc: () => openSimple('Удалить аккаунт', `<p class="mute" style="padding-top:12px">Мы удалим профиль в приложении. Договор и абонемент в клубе останутся действующими — их закрывает менеджер по заявлению.</p>`, `${demoBox('Удаление аккаунта недоступно в демо-версии.')}<button class="btn block danger" data-act="deleteGo" style="margin-top:12px">Отправить запрос на удаление</button>`),
+  deleteGo: () => demoToast('Удаление аккаунта'),
   reset: () => { try { localStorage.removeItem(KEY); } catch (e) {} S = fresh(); O = { step:'splash', club:'kp', ci:0, f:{ g:'m', name:'', dob:'', promo:'', email:'', phone:'' }, mode:'new', sent:false }; close(true); renderOnb(); },
   logout: () => ACT.reset(),
   // onboarding
@@ -1635,6 +1649,7 @@ const ACT = {
     if (O.step === 'data'){ if (O.f.name.split(/\s+/).filter(Boolean).length < 2) return obErr('Укажите имя и фамилию — как в паспорте'); if (!O.f.dob) return obErr('Укажите дату рождения'); O.step = 'contact'; return renderOnb(); }
     if (O.step === 'contact'){ if (O.mode !== 'login' && O.f.email && !/^\S+@\S+\.\S+$/.test(O.f.email)) return obErr('Проверьте email — в нём должна быть «@» и домен'); if (!phoneOk(O.f.phone)) return obErr('Введите номер полностью: +7 и 10 цифр'); O.step = 'code'; O.sent = false; return renderOnb(); }
   },
+  obSkipCode: () => { if (O.mode === 'login') return demoLogin(); O.step = 'pay'; O.sent = false; renderOnb(); },
   obSend: () => { O.sent = true; renderOnb(); },
   obResend: () => { toast('Код отправлен повторно'); clearTimers(); const b = $('#resend'); if (b){ b.disabled = true; } startResend(); },
   obVerify: () => { const v = ($('#f-code')?.value || '').replace(/\D/g,''); if (v.length !== 4) return obErr('Введите 4 цифры из СМС'); if (O.mode === 'login') return demoLogin(); O.step = 'pay'; O.sent = false; renderOnb(); },
