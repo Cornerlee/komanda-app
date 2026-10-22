@@ -1,0 +1,1663 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Команда Первых</title>
+<meta name="description" content="Приложение сети фитнес-клубов «Команда Первых»: абонементы, расписание, тренеры, вход по QR">
+<meta name="theme-color" content="#100E0D">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Команда Первых">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>window.PWA_MODE = true;</script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700;800&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+/* Layout: one phone-width app column (max 440px) — screen + tab bar; pushed pages and bottom sheets stack over it. Dark-only by design. */
+:root{
+  color-scheme:dark;
+  /* Тёплый чёрный и бежевый — от «Образа Силы»; синий и маджента — от «Команды Первых» */
+  --page:#070606;
+  --ink:#100E0D;
+  --s1:#191614;
+  --s2:#231F1C;
+  --s3:#2F2A26;
+  --line:#2C2724;
+  --fg:#F6F2ED;
+  --mute:#A59A91;
+  --dim:#6F665F;
+  --blue:#2F5BFF;
+  --blue-hi:#5A7DFF;
+  --blue-soft:rgba(47,91,255,.16);
+  --magenta:#F20B9E;
+  --magenta-soft:rgba(242,11,158,.16);
+  --wine:#7B2F2F;
+  --wine-hi:#A8443A;
+  --sand:#C7BCB1;
+  --ok:#3DCB82;
+  --warn:#FFB547;
+  --bad:#FF4D5E;
+  --on-accent:#FFFFFF;
+  --qr-bg:#FFFFFF;
+  --qr-ink:#100E0D;
+  --club:var(--blue);
+  --club-soft:var(--blue-soft);
+  --club-ink:#FFFFFF;
+  --f-display:'Unbounded','Arial Black',system-ui,sans-serif;
+  --f-body:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --gl:max(16px, env(safe-area-inset-left, 0px));
+  --gr:max(16px, env(safe-area-inset-right, 0px));
+  --logo-kp:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 680 159'%3E%3Cpath d='M86 63C86 68 86 72 91 74L91 76L58 76C54 74 52 70 52 64L52 57C52 52 49 48 43 48L34 48L34 76L0 76L0 6L34 6L34 32L44 32C49 32 52 29 52 23L52 16C52 12 54 7 58 6L90 6L90 9C85 10 84 14 84 19L84 25C84 33 82 37 68 39L68 41C84 43 86 47 86 58ZM96 41C96 70 108 77 141 77C174 77 186 70 186 41C186 12 174 5 141 5C108 5 96 12 96 41ZM151 30L151 52C151 59 149 62 141 62C134 62 131 59 131 52L131 30C131 23 134 20 141 20C149 20 151 23 151 30ZM238 6L246 37L248 37L255 6L302 6L302 76L273 76L273 30L271 30L259 76L235 76L223 30L220 30L220 76L191 76L191 6ZM309 32C310 11 319 5 353 5C379 5 397 7 397 29L397 76L364 76L364 66L361 66C357 72 352 77 333 77C319 77 308 73 308 58C308 45 314 40 331 38L363 34L363 29C363 22 360 20 353 20C346 20 341 22 341 30L341 32ZM363 44L351 46C345 48 342 50 342 54C342 59 346 61 350 61C357 61 363 56 363 47ZM437 6L437 31L456 31L456 6L490 6L490 76L456 76L456 48L437 48L437 76L403 76L403 6ZM495 52C495 77 512 77 541 77C571 77 585 74 585 50L585 26C585 9 573 3 551 3L528 3C511 3 500 3 499 1L496 1L496 16C501 18 512 18 525 18L542 18C552 17 564 18 567 28L564 28C561 23 554 21 540 21C512 21 495 20 495 46ZM531 56L531 44C531 36 534 34 541 34C548 34 551 36 551 44L551 56C551 63 548 65 541 65C534 65 531 63 531 56ZM591 32C592 11 600 5 635 5C661 5 679 7 679 29L679 76L645 76L645 66L643 66C639 72 634 77 615 77C601 77 590 73 590 58C590 45 596 40 612 38L644 34L644 29C644 22 642 20 634 20C627 20 623 22 623 30L623 32ZM644 44L633 46C627 48 624 50 624 54C624 59 628 61 632 61C639 61 644 56 644 47ZM87 88L0 88L0 158L34 158L34 103L53 103L53 158L87 158ZM127 126L127 132C127 142 130 144 139 144C146 144 152 143 152 134L152 132L182 132C183 154 168 159 139 159C107 159 92 156 92 129L92 119C92 91 105 87 138 87C169 87 181 91 182 118L182 126ZM149 115L149 113C149 105 147 101 138 101C129 101 127 105 127 112L127 115ZM222 148L222 158L187 158L187 88L222 88L222 98L224 98C227 92 235 87 249 87C270 87 279 100 279 122C279 144 270 158 249 158C235 158 227 153 224 148ZM242 114C242 107 239 105 233 105C227 105 222 108 222 116L222 125C222 133 226 138 233 138C238 138 242 136 242 128ZM346 88C360 88 372 92 372 105C372 116 362 120 348 121L348 123C363 124 373 128 373 140C373 154 362 158 346 158L285 158L285 88ZM318 115L327 115C334 115 339 114 339 109C339 105 334 104 327 104L318 104ZM318 142L327 142C335 142 340 141 340 136C340 130 335 129 327 129L318 129ZM413 88L379 88L379 158L433 158C451 158 462 154 462 136C462 119 453 113 435 113L413 113ZM502 88L502 158L468 158L468 88ZM413 144L413 127L422 127C426 127 432 128 432 135C432 140 430 144 422 144ZM551 88L505 88L535 125L505 158L536 158L550 143L562 158L610 158L578 120L608 88L576 88L563 102Z'/%3E%3C/svg%3E");
+  --logo-os:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAABCCAYAAADt9OvrAAAIWElEQVR4Aeydi5mdNhCFnVTkVJCUEldgl5KtwC4lqSDuyNZ/v51r4IIGoSdw9kML6DGPI+kwCHb5/cPrz98hi/Rv2P9olP4JetBJCofdtlb+puj52AEN+iHFxlp1bVz0wCAVdmzdi8MZ/MHGvf6Urgf3MAZJs35YEhaKv4YapD/DvtX2OShCJwkbwqk2IfDBxsX/AQsGcdgNu2HrXuNeJuLehjepB/fABaQZHxhh2dVhFDwwEptGsUd29EeAQcy46G/JqwWpBJRCbq/a7pdDvz/4AMIi9BsRwBFtOvVQuYjxDN7RXCESSLVp9Igx1Z/a9eGDj0ZYnrL/QoUaKYiNbpBptELjwhoYeDIbu7hbnWd3TrlnRGpE48nLKT9qCxFjjt4WbXP68Ehbz6cHYXlXh9+ClL8qpU9Bbmxj7SJW3rqsFg4xud9bO7lTX8zm3LK3nTaMUM2bPzEbR4wWzV7GXW4/praHa0z/2v4rEdZaQas8QGmlS3rOg8CXk5j6WFeJ2EqUESl+FNW5i3iIvt6v3oR1PUTl0Z0Q8MiGCOMPB5Cjt5SO2GsWi7Cu2a/yqj4CkFVsHcqWO7iLiEVaLCbXt/YiGkRYF+lIudEcAW999dvEounxJPt56N1aPive/UCEtTYClCcE4gh4t3HLhwYQlqKsOKa7SkVYu2BSJSEwQ8B7MghBzRqEk7W8kP3cRn5i+DSy94EIq3cPSP/ZEPBu34ikWLda+uURFvVZF2OvtI7AJxHWOjBbuQzWFmlLv/KLI5As0CMVngxuCfWeGDK2ttqOko+NtZIXZX4XYaUNA57otEh0HMlbK0mzXrVzEaA/Yk8Gl2tXS31rkde0DrI9QpzW73Fcc/xv+UPUykulIqwthAbJZ60E4hrEnGZmjOozhBUDYc8Lr/a6w5YcT8dWu6vmQ1TPqFUR1jm6ecQ/lMWmWsnrFS9S8dofKSfyIQLaausRkbVjLYuIwc6XeyKYZd6dz7l4Mc4eGGQS1kOGftVHgInChKmvab8GbKqVYlYw2XsQlvfeVYpNkFbMx+cEjVW6URnjDOJ6/PHzjfzOdpXwtFby1j9Y6Mx24AICnrcHDX3xbtNSSdQjLCboaBcog7vW+EeuF6WKsKwXBth7g3gAE7uaAKEzqHsYwVpiTO8REr3CE8MYJkfKvDnQ/b81HHFKbfog0FIr5MTV1hJEtWdBu4aNe6KrI3q9W8iRo6wj/hZpozWsIjDeUggkUitBTlxtLfUE2COsI9GV+QMh2/Ha3tO91ubSeSKsS3evnCuAAJHOlhiPcLbaWT6EbMdrez0xXKAiwloAolMhMEGAJ1OT05dD77bupcFKhkd6XR62rNg5RJYIa4hukBEDIuA9pWOdrQRhKcpK6HwRVgJYqnorBLz3rlhnKwWIF2Xpvax3pEVY70BoJwQmCHi3Ybx3NamefehFWayjeRFfthFnECDCqtBLEnl6BDxyyHkyuAWOF2XpiWFAToQVQNAmBCYIQFZENJOs2SFrV7OMQidelKUnhgFoEVYAYZCNiTKIKbc2o+Xa1RJojwy9W9WlvMudQ1geSCz4ARQTqmRCJikGqhcmx9rWKCvp/1QWGHt//lHiiVQNTK4kkz6J+fM6HmO108u8hfzWURZ4tEpwAfMghtobhOVNBMJjgOLKUzIhE9kxA70wOda2RllJ/6eyPBzwxRvM1FHKQ4A+iUnw5kqs7d4yjxSZ2Htl5dSDqMCjVdrDB49/4DcaKRjIpZ/EmNwz7r1BfEafRrPZW9RmPLYgLG8+MrFHw66VPd+IsFDG34TRIRyPkLhNrfEkZgTfUm3gr/q9QZwqU/VfEfBuyVuOR+8C5ZHrq3fnzoGb4KgPRli4Q4cwOQCLCuTVTXPp6EQ3ht399gfCNixaXNXnPXG/M48A6I+WqHgXKMiVW7aWNrXWZXwAJ8FND/1TwiKDyQFYVIA4WiZ0ohs7eqWW/sZ0Qdg9sUB3zD7KevVRDb2ev/RHDb0xmWAcS8zVWPvcMuTH9NcuMz7AjqcvS8J6FuhACAgBITAaAiKs0XrksvbIMSGQj4AIKx9DSRACQqARAiKsRkBLjRAQAvkIiLDyMZQEISAE5ghUOxNhVYNWgoWAECiNgAirNKKSJwSEQDUERFjVoJVgISAESiMgwiqNaL48SRACQmADARHWBjDKFgJCYDwERFjj9YksEgJCYAMBEdYGMMoWAi0QkI40BERYaXipthAQAh0REGF1BF+qhYAQSENAhJWGl2oLASHQEYFTE1ZH3KRaCAiBDgiIsDqALpVCQAgcQ0CEdQw3tRICQqADAiKsDqAXVsm33PYk7/+W8z/CTU7MxGm9vZ+cmrYxHbH9q/55Dnqt/bwkfmZt2MdrqnRIBERYQ3bLLqMgoB+hJt803JNCVXczOVsV0cl36rx6a+2tzZ79WvtlnslZ5sfOrQ37WD2VDYqACGvQjtlhFl9OsWp7PgjAhxas/tH9VOdRGfY1oKXNfCXlqEy1uwkCIqybdHQBN4nmCoiRCCHgIbBdLsLaxkYlvxCYrvnwnbhfJToSAg0REGE1BPukqiArW/OBrGbfiRvAJyK/WML+AcyUCSUQEGGVQPG6MpjsI5MVyC/XwuwccqXc7OdY6eQIiLBO3oGv5hfLOQNZxZydRoK8VhGrq7KTICDCOklHNTaTCW6RCU/1ppP/iCnIO9JObYTADAER1gwOnbwjwLtWHL6FXyVeh+D9rSDqsZWQ9xCkX/dDQIR1jT7n9o23v2PpSJTzJRMeWwy3aM3WlTLFzppv+Yxuq5gbIZqc0fa3s0eEdd4uZ3HZXraEED4HV2IphbCQi/wgssjGbSVkVYM4tnw2w9Ftx9qfHIGfAAAA//+kOj5AAAAABklEQVQDADaAb2QqrQW6AAAAAElFTkSuQmCC");
+}
+[data-club="os"]{--club:var(--wine-hi);--club-soft:rgba(168,68,58,.22);--club-ink:#F6ECE2}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--page);color:var(--fg);font:500 15px/1.45 var(--f-body);-webkit-font-smoothing:antialiased;overflow:hidden}
+#app{position:relative;height:100%;max-width:440px;margin:0 auto;background:var(--ink);overflow:hidden;display:flex;flex-direction:column}
+@media (min-width:520px){#app{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+@media (max-width:519px){html,body{background:var(--ink)}}
+body{overscroll-behavior:none}
+.install{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:16px;background:var(--s1);border:1px solid var(--line);text-align:left}
+.install .ic{color:var(--club)}
+.steps-i{display:flex;flex-direction:column;gap:14px;counter-reset:st;margin-top:8px}
+.steps-i li{list-style:none;display:flex;gap:12px;align-items:flex-start;font-weight:600}
+.steps-i li::before{counter-increment:st;content:counter(st);flex:none;width:28px;height:28px;border-radius:50%;background:var(--club);color:var(--club-ink);display:grid;place-items:center;font-weight:800;font-size:13px}
+#screen{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
+.view{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding-bottom:96px;scrollbar-width:none}
+.view::-webkit-scrollbar,.hscroll::-webkit-scrollbar,.scroll::-webkit-scrollbar{display:none}
+.g{padding-left:var(--gl);padding-right:var(--gr)}
+button,input,textarea,select{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer;padding:0;text-align:inherit}
+button:disabled{cursor:default}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--blue-hi);outline-offset:2px;border-radius:8px}
+.ic{width:22px;height:22px;flex:none;display:block}
+h1,h2,h3,h4{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em;font-weight:700}
+p{margin:0}
+.h1{font-size:25px;line-height:1.12}
+.h2{font-size:16px;line-height:1.25;font-weight:600}
+.h3{font-size:19px;line-height:1.2}
+.mute{color:var(--mute)}
+.dim{color:var(--dim)}
+.small{font-size:13px}
+.tiny{font-size:11.5px}
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.accent{color:var(--club)}
+.sec{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.link{color:var(--mute);font-size:13px;font-weight:600}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:12px}
+.grow{flex:1;min-width:0}
+
+/* logos as masks so they take any brand color */
+.mark{display:block;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.mark-kp{--m:var(--logo-kp);aspect-ratio:680/159;height:28px}
+.mark-os{--m:var(--logo-os);aspect-ratio:300/66;height:24px;color:var(--sand)}
+
+/* header */
+.hd{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding-block:12px;background:var(--ink)}
+.hd .brand{flex:1;min-width:0;display:flex;align-items:center;gap:10px;color:var(--fg)}
+.clubchip{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 10px 0 9px;border-radius:999px;background:var(--s2);font-size:13px;font-weight:700;max-width:58%}
+.clubchip .ic{width:16px;height:16px}
+.clubchip .ic:first-child{color:var(--club)}
+.clubchip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{position:relative;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--s2)}
+.icon-btn .dot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--magenta);box-shadow:0 0 0 2px var(--s2)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:999px;background:var(--blue);color:var(--on-accent);font-weight:800;font-size:15px;letter-spacing:.01em;transition:transform .12s,background .15s;white-space:nowrap}
+.btn:active{transform:scale(.98)}
+.btn:hover{background:var(--blue-hi)}
+.btn.block{width:100%}
+.btn.sm{height:40px;padding:0 16px;font-size:13.5px}
+.btn.ghost{background:var(--s2);color:var(--fg)}
+.btn.ghost:hover{background:var(--s3)}
+.btn.line{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1.5px var(--s3)}
+.btn.club{background:var(--club);color:var(--club-ink)}
+.btn.danger{background:transparent;color:var(--bad);box-shadow:inset 0 0 0 1.5px rgba(255,77,94,.35)}
+.btn[disabled]{background:var(--s2);color:var(--dim);transform:none}
+
+/* hero slider */
+.hero{position:relative;margin-top:4px}
+.slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;gap:10px;padding-inline:var(--gl) var(--gr);scroll-padding-inline:var(--gl)}
+.slides::-webkit-scrollbar{display:none}
+.slide{position:relative;flex:0 0 100%;scroll-snap-align:start;min-height:228px;border-radius:24px;overflow:hidden;padding:20px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;isolation:isolate}
+.slide .big{position:absolute;right:-6px;top:-14px;font-family:var(--f-display);font-weight:800;font-size:92px;line-height:1;letter-spacing:-.04em;z-index:-1;white-space:nowrap}
+.slide .ring{position:absolute;border-radius:50%;z-index:-1}
+.slide h3{font-size:22px;line-height:1.12;max-width:15ch}
+.slide p{font-size:14px;max-width:30ch;opacity:.86}
+.slide .btn{align-self:flex-start;margin-top:6px;height:42px;font-size:14px}
+.t-blue{background:var(--blue);color:#fff}
+.t-blue .big{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.4)}
+.t-blue .btn{background:#fff;color:var(--blue)}
+.t-magenta{background:var(--magenta);color:#fff}
+.t-magenta .big{color:rgba(255,255,255,.18)}
+.t-magenta .btn{background:var(--ink);color:#fff}
+.t-wine{background:var(--wine);color:#F6ECE2}
+.t-wine .big{color:transparent;-webkit-text-stroke:1.5px rgba(199,188,177,.45)}
+.t-wine .btn{background:var(--sand);color:#2A1F1A}
+.t-ink{background:var(--s2);color:var(--fg)}
+.t-ink .big{color:transparent;-webkit-text-stroke:1.5px rgba(47,91,255,.6)}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:12px}
+.dots i{width:6px;height:6px;border-radius:3px;background:var(--s3);transition:width .2s,background .2s}
+.dots i.on{width:18px;background:var(--fg)}
+
+/* gift banner */
+.giftbar{display:flex;align-items:center;gap:12px;margin-top:16px;padding:12px 12px 12px 14px;border-radius:16px;background:var(--magenta);color:#fff}
+.giftbar b{display:block;font-size:14.5px}
+.giftbar small{font-size:12.5px;opacity:.9}
+.giftbar .x{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:rgba(0,0,0,.18)}
+
+/* quick tiles */
+.hscroll{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-inline:var(--gl) var(--gr);scroll-padding-inline:var(--gl);scroll-snap-type:x proximity}
+.tile{flex:0 0 104px;height:104px;border-radius:20px;background:var(--s1);padding:12px;display:flex;flex-direction:column;justify-content:space-between;scroll-snap-align:start;border:1px solid var(--line);transition:background .15s}
+.tile:hover{background:var(--s2)}
+.tile .ic{width:26px;height:26px;color:var(--club)}
+.tile b{font-size:13.5px;line-height:1.15;font-weight:700}
+.tile.primary{background:var(--club);border-color:transparent;color:var(--club-ink)}
+.tile.primary .ic{color:var(--club-ink)}
+
+/* cards */
+.card{background:var(--s1);border:1px solid var(--line);border-radius:20px;padding:16px}
+.bk{display:flex;gap:12px;align-items:center}
+.bk .when{flex:none;width:58px;text-align:center;padding:8px 0;border-radius:14px;background:var(--club-soft)}
+.bk .when b{display:block;font-family:var(--f-display);font-size:15px}
+.bk .when small{font-size:11px;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+
+/* club load */
+.load{display:flex;flex-direction:column;gap:14px;text-align:left;width:100%}
+.load-top{display:flex;gap:12px;align-items:flex-start}
+.load-top .grow b{display:block;font-size:15px}
+.load-num{text-align:right}
+.load-num b{font-family:var(--f-display);font-size:26px;line-height:1}
+.load-num small{display:block;font-size:11.5px;color:var(--mute)}
+.bars{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;align-items:end;gap:3px;height:46px}
+.bars i{display:block;border-radius:3px 3px 1px 1px;background:var(--s3);min-height:3px}
+.bars i.now{background:var(--club)}
+.bars i.past{background:var(--s2)}
+.bars-x{display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);margin-top:-8px}
+.load-foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pill{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.ok{background:rgba(61,203,130,.14);color:var(--ok)}
+.pill.warn{background:rgba(255,181,71,.14);color:var(--warn)}
+.pill.bad{background:rgba(255,77,94,.14);color:var(--bad)}
+.pill.info{background:var(--club-soft);color:var(--fg)}
+.pill.info::before{background:var(--club)}
+.pill.plain::before{display:none}
+.avs{display:flex}
+.av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;flex:none;box-shadow:0 0 0 2px var(--s1)}
+.avs .av+.av{margin-left:-9px}
+.avs .more{background:var(--s3);color:var(--fg);font-size:11px}
+
+/* promos */
+.promo{flex:0 0 220px;min-height:150px;border-radius:20px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;scroll-snap-align:start;text-align:left;position:relative;overflow:hidden;isolation:isolate}
+.promo b{font-family:var(--f-display);font-size:16px;line-height:1.15;font-weight:700}
+.promo small{font-size:12.5px;opacity:.85}
+.promo .ic{width:28px;height:28px}
+
+/* contacts */
+.contact-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.contact-row:last-child{border-bottom:0}
+.contact-row .ic{color:var(--mute)}
+
+/* tab bar + strip + fab */
+.tabbar{display:grid;grid-template-columns:repeat(5,1fr);background:var(--s1);border-top:1px solid var(--line);padding-top:6px;padding-bottom:8px;padding-left:var(--gl);padding-right:var(--gr);position:relative;z-index:6}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 2px;color:var(--dim);font-size:10.5px;font-weight:700;text-align:center}
+.tab .ic{width:24px;height:24px}
+.tab.on{color:var(--fg)}
+.tab.on .ic{color:var(--club)}
+.strip{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:8px;font-size:12.5px;font-weight:700;position:relative;z-index:6}
+.strip.bad{background:var(--bad);color:#fff}
+.strip.warn{background:var(--magenta);color:#fff}
+.strip.info{background:var(--s2);color:var(--fg)}
+.strip button{text-decoration:underline;text-underline-offset:3px;flex:none}
+.fab{position:absolute;right:var(--gr);bottom:var(--fab-b,96px);z-index:7;width:56px;height:56px;border-radius:50%;background:var(--magenta);color:#fff;display:grid;place-items:center;box-shadow:0 8px 24px rgba(242,11,158,.35)}
+.fab .ic{width:26px;height:26px}
+
+/* challenges */
+.ch-hero{position:relative;overflow:hidden;border-radius:0 0 28px 28px;padding-top:20px;padding-bottom:26px;background:var(--blue);color:#fff;isolation:isolate}
+.ch-hero .ring{position:absolute;border-radius:50%;z-index:-1}
+.ch-hero h1{font-size:30px;line-height:1.05;max-width:11ch;margin-top:26px}
+.ch-hero p{margin-top:10px;max-width:32ch;opacity:.9}
+.pts{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;background:rgba(0,0,0,.25);font-weight:800;font-size:13.5px}
+.ch{display:flex;flex-direction:column;gap:12px}
+.ch-top{display:flex;gap:14px;align-items:flex-start}
+.ch-ico{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;flex:none}
+.ch-ico .ic{width:28px;height:28px}
+.progress{height:8px;border-radius:4px;background:var(--s3);overflow:hidden}
+.progress i{display:block;height:100%;border-radius:4px;background:var(--club)}
+.reward{font-size:12.5px;font-weight:800;color:var(--magenta)}
+
+/* schedule */
+.sched-hd{padding-top:16px;padding-bottom:4px}
+.title-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-display);font-weight:700;font-size:25px;line-height:1.1;text-align:left}
+.title-btn .ic{color:var(--mute)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;border-radius:14px;background:var(--s1);border:1px solid var(--line)}
+.seg button{height:36px;border-radius:10px;font-size:13.5px;font-weight:700;color:var(--mute);text-align:center}
+.seg button.on{background:var(--club-soft);color:var(--fg);box-shadow:inset 0 0 0 1px var(--club)}
+.days{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-block:12px;padding-inline:var(--gl) var(--gr);background:var(--s1);border-block:1px solid var(--line);margin-top:14px}
+.days::-webkit-scrollbar{display:none}
+.day{flex:0 0 52px;height:58px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--mute);text-align:center}
+.day b{font-family:var(--f-display);font-size:16px;color:var(--fg)}
+.day small{font-size:11px;font-weight:700}
+.day.on{background:var(--club);color:var(--club-ink)}
+.day.on b{color:var(--club-ink)}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-block:12px;padding-inline:var(--gl) var(--gr)}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;height:34px;padding:0 14px;border-radius:999px;background:var(--s1);border:1px solid var(--line);font-size:13px;font-weight:700;color:var(--mute);white-space:nowrap}
+.chip.on{background:var(--fg);border-color:var(--fg);color:var(--ink)}
+.cls{display:flex;gap:12px;align-items:center;width:100%;padding-block:14px;border-bottom:1px solid var(--line);text-align:left}
+.cls .t{flex:none;width:52px}
+.cls .t b{display:block;font-family:var(--f-display);font-size:14px;font-weight:600}
+.cls .t small{font-size:11.5px;color:var(--dim)}
+.cls .ini{width:36px;height:36px;border-radius:11px;flex:none;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--club-soft);color:var(--fg)}
+.cls .nm{font-weight:800;font-size:15px;line-height:1.25}
+.cls .sub{font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cls .fill{flex:none;width:54px;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.cls .fill small{font-size:11.5px;color:var(--mute);font-weight:700}
+.meter{width:100%;height:5px;border-radius:3px;background:var(--s3);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--club);border-radius:3px}
+.meter.full i{background:var(--bad)}
+.cls.past{opacity:.42}
+.cls .mine{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:800;color:var(--ok)}
+.cls .mine .ic{width:14px;height:14px}
+.empty{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:48px 24px;color:var(--mute)}
+.empty .ic{width:44px;height:44px;color:var(--s3)}
+.empty b{color:var(--fg);font-family:var(--f-display);font-size:17px}
+
+/* trainers */
+.tr{display:flex;gap:14px;align-items:center;width:100%;padding-block:14px;border-bottom:1px solid var(--line);text-align:left}
+.tr .ph{width:64px;height:64px;border-radius:18px;flex:none;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:20px;color:#fff;position:relative}
+.tr .ph .vf{position:absolute;right:-5px;top:-5px;width:20px;height:20px;border-radius:50%;background:var(--magenta);display:grid;place-items:center;box-shadow:0 0 0 2px var(--ink)}
+.tr .ph .vf .ic{width:12px;height:12px;color:#fff}
+.tr .role{font-size:11.5px;color:var(--mute);font-weight:700}
+.tr .nm{font-family:var(--f-display);font-weight:600;font-size:15.5px;line-height:1.2}
+.tr .price{font-size:13px;font-weight:700}
+
+/* profile */
+.me-hd{display:flex;align-items:center;gap:16px;padding-top:20px}
+.me-hd h1{font-size:24px}
+.bigav{width:84px;height:84px;border-radius:50%;background:var(--club);color:var(--club-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:28px;flex:none}
+.ptsline{margin-top:6px;display:flex;align-items:baseline;gap:8px}
+.ptsline b{font-family:var(--f-display);font-size:22px}
+.contract{position:relative;overflow:hidden;border-radius:24px;padding:18px;background:var(--s1);border:1px solid var(--line);display:flex;flex-direction:column;gap:14px;isolation:isolate}
+.contract .cname{font-family:var(--f-display);font-size:21px;font-weight:700;line-height:1.1}
+.contract .glow{position:absolute;right:-60px;top:-60px;width:180px;height:180px;border-radius:50%;background:var(--club);opacity:.18;z-index:-1}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kv div{background:var(--s2);border-radius:14px;padding:10px}
+.kv b{display:block;font-family:var(--f-display);font-size:17px}
+.kv small{font-size:11.5px;color:var(--mute);line-height:1.2;display:block}
+.list{display:flex;flex-direction:column}
+.list-title{font-family:var(--f-display);font-size:19px;font-weight:700;color:var(--mute);margin-top:30px;margin-bottom:6px}
+.li{display:flex;align-items:center;gap:12px;width:100%;padding:15px 0;border-bottom:1px solid var(--line);font-size:15px;font-weight:600;text-align:left}
+.li .ic{color:var(--mute)}
+.li .chev{color:var(--dim);width:18px;height:18px}
+.li .val{color:var(--mute);font-size:13px;font-weight:600}
+.badge-n{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--magenta);color:#fff;font-size:11.5px;font-weight:800;display:grid;place-items:center}
+.demo-note{margin-top:24px;padding:14px;border-radius:16px;background:var(--s1);border:1px dashed var(--s3);font-size:12.5px;color:var(--mute)}
+
+/* layers: pages + sheets */
+#layer{position:absolute;inset:0;z-index:30;pointer-events:none}
+.layer{position:absolute;inset:0;display:flex;flex-direction:column;pointer-events:auto}
+.layer.page{background:var(--ink);animation:pin .26s cubic-bezier(.2,.8,.2,1)}
+.layer.page.out{animation:pout .2s ease-in forwards}
+@keyframes pin{from{transform:translateX(100%)}to{transform:none}}
+@keyframes pout{to{transform:translateX(100%)}}
+.layer.sheet{justify-content:flex-end}
+.layer.sheet .backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);animation:fin .2s}
+.layer.sheet .panel{position:relative;max-height:90%;display:flex;flex-direction:column;background:var(--s1);border-radius:26px 26px 0 0;border-top:1px solid var(--line);animation:sin .28s cubic-bezier(.2,.8,.2,1)}
+.layer.sheet.out .panel{animation:sout .2s ease-in forwards}
+.layer.sheet.out .backdrop{animation:fout .2s forwards}
+@keyframes sin{from{transform:translateY(100%)}to{transform:none}}
+@keyframes sout{to{transform:translateY(100%)}}
+@keyframes fin{from{opacity:0}}
+@keyframes fout{to{opacity:0}}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--s3);margin:10px auto 0;flex:none}
+.ph-head{display:grid;grid-template-columns:minmax(40px,auto) 1fr minmax(40px,auto);align-items:center;gap:8px;padding-block:10px;flex:none}
+.ph-head h2{font-size:16px;font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph-head .ib{width:40px;height:40px;display:grid;place-items:center;border-radius:12px}
+.ph-head .ib:hover{background:var(--s2)}
+.skip{height:40px;padding:0 12px;border-radius:12px;font-size:14px;font-weight:700;color:var(--mute)}
+.skip:hover{color:var(--fg);background:var(--s2)}
+.scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-bottom:28px}
+.footer{flex:none;padding-top:12px;padding-bottom:16px;background:var(--ink);border-top:1px solid var(--line)}
+.sheet .footer{background:var(--s1)}
+.progress-top{height:3px;border-radius:2px;background:var(--s3);overflow:hidden;margin:0 auto;width:120px}
+.progress-top i{display:block;height:100%;background:var(--club);transition:width .3s}
+
+/* forms */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;color:var(--mute);font-weight:700}
+.input{height:52px;border-radius:14px;background:var(--s1);border:1px solid var(--line);padding:0 14px;font-size:16px;font-weight:600;width:100%;color:var(--fg);transition:border-color .15s}
+.input:focus{outline:none;border-color:var(--club)}
+.input::placeholder{color:var(--dim)}
+textarea.input{height:120px;padding:12px 14px;resize:none;line-height:1.4}
+.input.code{height:64px;text-align:center;font-family:var(--f-display);font-size:28px;letter-spacing:.5em;padding-left:.5em}
+.err{font-size:12.5px;color:var(--bad);font-weight:600;min-height:1em}
+.hint{font-size:12.5px;color:var(--mute)}
+.switch{position:relative;width:48px;height:28px;border-radius:14px;background:var(--s3);flex:none;transition:background .15s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--fg);transition:transform .15s}
+.switch.on{background:var(--club)}
+.switch.on::after{transform:translateX(20px)}
+
+/* onboarding */
+.ob-splash{flex:1;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;isolation:isolate;padding-top:28px;padding-bottom:24px}
+.ob-splash .ring{position:absolute;border-radius:50%;z-index:-1}
+.ob-splash h1{margin:0}
+.clubcard{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:20px;background:var(--s1);border:1.5px solid var(--line);text-align:left;width:100%;transition:border-color .15s,background .15s}
+.clubcard.on{border-color:var(--club);background:var(--club-soft)}
+.clubcard .mark-kp{height:26px}
+.clubcard .feats{display:flex;flex-wrap:wrap;gap:6px}
+.clubcard .feats span{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:999px;background:var(--s2);color:var(--mute)}
+.clubcard[data-id="os"]{--club:var(--wine-hi);--club-soft:rgba(168,68,58,.18)}
+.tag-soon{font-size:11px;font-weight:800;color:var(--sand);background:rgba(199,188,177,.12);padding:3px 8px;border-radius:999px;white-space:nowrap}
+
+/* contract carousel */
+.cc-track{position:relative;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-block:12px 18px;padding-inline:calc(50% - 128px)}
+.cc-track::-webkit-scrollbar{display:none}
+.cc{flex:0 0 256px;min-height:178px;scroll-snap-align:center;border-radius:20px;padding:16px;background:var(--s1);border:1px solid var(--line);display:flex;flex-direction:column;gap:6px;text-align:left;opacity:.55;transform:scale(.95);transition:opacity .2s,transform .2s,border-color .2s,background .2s;position:relative}
+.cc.on{opacity:1;transform:none;border-color:var(--club);background:linear-gradient(180deg,var(--club-soft),var(--s1) 70%)}
+.cc .cc-badge{align-self:flex-start;font-size:11px;font-weight:800;padding:4px 8px;border-radius:7px;background:var(--magenta);color:#fff}
+.cc h3{font-size:19px;line-height:1.12}
+.cc .cc-sub{font-size:12.5px;color:var(--mute);flex:1}
+.cc .cc-price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.cc .cc-price b{font-family:var(--f-display);font-size:22px}
+.cc .cc-price s{font-size:13px;color:var(--dim)}
+.cc .disc{font-size:11.5px;font-weight:800;padding:3px 7px;border-radius:6px;background:var(--magenta);color:#fff}
+.feat{display:flex;align-items:flex-start;gap:12px;padding-block:13px;border-bottom:1px solid var(--line);font-size:14.5px;font-weight:600}
+.feat .ok{margin-left:auto;width:22px;height:22px;border-radius:50%;background:var(--club);color:var(--club-ink);display:grid;place-items:center;flex:none}
+.feat .ok .ic{width:14px;height:14px}
+.paybar{display:flex;align-items:center;gap:12px}
+.paybar .grow b{display:block;font-family:var(--f-display);font-size:18px}
+.paybar .grow small{color:var(--mute);font-size:12.5px}
+.sumrow{display:flex;justify-content:space-between;gap:12px;padding-block:12px;border-bottom:1px solid var(--line);font-size:14.5px}
+.sumrow span:first-child{color:var(--mute)}
+.sumrow b{text-align:right}
+
+/* QR */
+.qrbox{background:var(--qr-bg);border-radius:24px;padding:18px;width:min(280px,100%);margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--qr-ink)}
+.qr{width:100%;height:auto;display:block}
+.qr-fallback{font-family:var(--f-display);font-size:18px;padding:30px 0;word-break:break-all;text-align:center}
+.timer{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:#5A524C}
+.timer svg{width:18px;height:18px;transform:rotate(-90deg)}
+
+/* shop */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.prod{display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--s1);border:1px solid var(--line);text-align:left}
+.art{aspect-ratio:1/0.82;display:grid;place-items:center;position:relative;overflow:hidden;isolation:isolate;max-width:100%}
+.art .ic{width:44px;height:44px;stroke-width:1.5}
+.art::after{content:"";position:absolute;width:120%;aspect-ratio:1;border-radius:50%;border:1.5px solid currentColor;opacity:.18;z-index:-1;right:-55%;bottom:-60%}
+.prod .info{padding:12px;display:flex;flex-direction:column;gap:4px;flex:1}
+.prod .info b{font-size:13.5px;line-height:1.25}
+.prod .info small{font-size:12px;color:var(--mute)}
+.prod .info .pr{margin-top:auto;padding-top:6px;font-size:13px;font-weight:800}
+.prod .info .pr span{color:var(--dim);font-weight:600;font-size:11.5px}
+.tone-blue{background:var(--blue);color:#fff}
+.tone-magenta{background:var(--magenta);color:#fff}
+.tone-wine{background:var(--wine);color:#F6ECE2}
+.tone-sand{background:var(--sand);color:#2A1F1A}
+.tone-ink{background:var(--s3);color:var(--fg)}
+.spots{position:absolute;left:10px;top:10px;font-size:10.5px;font-weight:800;padding:4px 7px;border-radius:6px;background:var(--ink);color:var(--fg);text-transform:uppercase;letter-spacing:.04em}
+.stepper{display:flex;align-items:center;gap:6px;background:var(--s2);border-radius:999px;padding:4px}
+.stepper button{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--s3)}
+.stepper b{min-width:28px;text-align:center;font-family:var(--f-display)}
+
+/* locker */
+.cells{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.cell{aspect-ratio:1;border-radius:10px;background:var(--s2);font-size:12.5px;font-weight:800;display:grid;place-items:center;border:1.5px solid transparent;max-width:100%}
+.cell.busy{background:transparent;border-color:var(--s2);color:var(--dim);text-decoration:line-through}
+.cell.on{background:var(--club);color:var(--club-ink)}
+.locker-big{font-family:var(--f-display);font-size:64px;font-weight:800;line-height:1}
+
+/* chat */
+.msgs{display:flex;flex-direction:column;gap:8px;padding-block:12px}
+.msg{max-width:82%;padding:10px 13px;border-radius:18px;font-size:14.5px;line-height:1.4}
+.msg.club{background:var(--s2);border-bottom-left-radius:6px;align-self:flex-start}
+.msg.me{background:var(--blue);color:#fff;border-bottom-right-radius:6px;align-self:flex-end}
+.msg small{display:block;font-size:10.5px;opacity:.65;margin-top:3px}
+.composer{display:flex;gap:8px;align-items:center}
+.composer .input{height:46px;border-radius:999px}
+.composer .send{width:46px;height:46px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;flex:none}
+
+/* FAQ */
+details{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:16px 0;font-weight:700;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary .ic{transition:transform .2s;color:var(--mute)}
+details[open] summary .ic{transform:rotate(180deg)}
+details p{padding-bottom:16px;color:var(--mute);font-size:14px}
+
+.stars{display:flex;gap:6px;justify-content:center}
+.stars button{color:var(--s3)}
+.stars button .ic{width:38px;height:38px}
+.stars button.on{color:var(--warn)}
+.stars button.on .ic{fill:currentColor}
+
+.toast{position:absolute;left:50%;bottom:110px;transform:translateX(-50%);z-index:50;max-width:calc(100% - 32px);padding:12px 16px;border-radius:14px;background:var(--fg);color:var(--ink);font-size:13.5px;font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:fin .2s;text-align:center}
+.spin{width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.success{width:84px;height:84px;border-radius:50%;background:var(--ok);color:#06210F;display:grid;place-items:center;margin:0 auto}
+.success .ic{width:40px;height:40px;stroke-width:2.4}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}}
+</style>
+
+</head>
+<body>
+<div id="app">
+  <div id="screen"></div>
+  <div id="layer"></div>
+  <div id="toast" class="toast" role="status" hidden></div>
+</div>
+
+<script>
+/* =========================================================
+   Команда Первых — веб-версия клиентского приложения сети.
+   Все данные ниже — демо. В рабочей версии этот слой
+   (объект API) заменяется вызовами REST API вашей CRM (Django/DRF).
+   ========================================================= */
+
+// ---------- helpers ----------
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => Math.round(n).toLocaleString('ru-RU').replace(/ | | /g, ' ');
+const rub = n => `${fmt(n)} ₽`;
+const plural = (n, f) => { const a = Math.abs(n) % 100, b = a % 10; return a > 10 && a < 20 ? f[2] : b > 1 && b < 5 ? f[1] : b === 1 ? f[0] : f[2]; };
+const T0 = new Date(); T0.setHours(0,0,0,0);
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const addMonths = (d, n) => { const x = new Date(d); x.setMonth(x.getMonth() + n); return x; };
+const iso = d => { const x = new Date(d); return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`; };
+const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+const MON = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const DOW = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+const DOWL = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+const dfmt = d => `${d.getDate()} ${MON[d.getMonth()]}`;
+const dfmtY = d => `${dfmt(d)} ${d.getFullYear()}`;
+const daysBetween = (a, b) => Math.round((parse(iso(b)) - parse(iso(a))) / 864e5);
+const nowMin = () => { const n = new Date(); return n.getHours() * 60 + n.getMinutes(); };
+const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+const fromMin = m => `${String(Math.floor(m / 60)).padStart(2,'0')}:${String(m % 60).padStart(2,'0')}`;
+function rng(seed){ let h = 1779033703 ^ seed.length; for (let i = 0; i < seed.length; i++){ h = Math.imul(h ^ seed.charCodeAt(i), 3432918353); h = h << 13 | h >>> 19; } return () => { h = Math.imul(h ^ h >>> 16, 2246822507); h = Math.imul(h ^ h >>> 13, 3266489909); h ^= h >>> 16; return (h >>> 0) / 4294967296; }; }
+const initials = name => name.split(/\s+/).filter(Boolean).slice(0,2).map(w => w[0]).join('').toUpperCase();
+const AVC = ['#2F5BFF','#F20B9E','#7B2F2F','#3A8F6B','#B4602F','#5B4FC9','#2A7F9E','#8A3F7A'];
+const avColor = s => AVC[[...s].reduce((a, c) => a + c.charCodeAt(0), 0) % AVC.length];
+
+// ---------- icons ----------
+const I = {
+  grid:'<rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/>',
+  trophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M16 5h3v2a3 3 0 0 1-3 3M8 5H5v2a3 3 0 0 0 3 3"/><path d="M12 13v4M8.5 20h7M10 17h4"/>',
+  cal:'<rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.3-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M15.5 4.8a3.3 3.3 0 0 1 0 6.4M18 14.8c2 .7 3.2 2.4 3.5 5.2"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 20.5c.8-4 4-6 8-6s7.2 2 8 6"/>',
+  qr:'<rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1.5"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1.5"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1.5"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18zM14 19.5h2M19 14h1.5"/>',
+  bag:'<path d="M5 8h14l-1 12.5H6L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
+  lock:'<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><path d="M12 14.5v2.5"/>',
+  snow:'<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="M9.5 4.5 12 7l2.5-2.5M9.5 19.5 12 17l2.5 2.5"/>',
+  gift:'<rect x="3.5" y="8.5" width="17" height="4" rx="1"/><path d="M5 12.5v8h14v-8M12 8.5v12"/><path d="M12 8.5S10.5 4 8 4.5 6.5 8.5 12 8.5zm0 0s1.5-4.5 4-4 1.5 4-4 4z"/>',
+  bell:'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 21h4"/>',
+  pin:'<path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  down:'<path d="m6 9 6 6 6-6"/>',
+  right:'<path d="m9 6 6 6-6 6"/>',
+  back:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  close:'<path d="M6 6l12 12M18 6 6 18"/>',
+  chat:'<path d="M4 5.5h16v11H9l-5 4v-15z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01" stroke-width="2.8"/>',
+  check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  minus:'<path d="M5 12h14"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  star:'<path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/>',
+  copy:'<rect x="8.5" y="8.5" width="12" height="12" rx="2.5"/><path d="M15.5 8.5v-3a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/>',
+  phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1.5 1.5 0 0 1-1.5 1.5A16.5 16.5 0 0 1 3.5 5.5 1.5 1.5 0 0 1 5 4z"/>',
+  send:'<path d="M4 12 20 4l-6 16-2.5-6.5L4 12z"/>',
+  drop:'<path d="M12 3.5s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+  flame:'<path d="M12 21a6 6 0 0 0 6-6c0-4-3-6-4-9-1 2-2 3-3.5 3.5C9 8 9 6.5 9 5c-2 2-3 5.5-3 10a6 6 0 0 0 6 6z"/>',
+  card:'<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h4"/>',
+  dumbbell:'<path d="M6.5 7v10M17.5 7v10M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/>',
+  cup:'<path d="M6 8h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V8z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M9 3.5c0 1 1 1.5 1 2.5M13 3.5c0 1 1 1.5 1 2.5"/>',
+  bottle:'<path d="M10 3h4v3l1.5 2.5V20a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V8.5L10 6V3z"/><path d="M8.5 12h7"/>',
+  towel:'<rect x="5" y="4" width="14" height="16" rx="2"/><path d="M5 9h14M9 4v5"/>',
+  shield:'<path d="M12 3.5 19 6v5.5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V6l7-2.5z"/><path d="m9 12 2 2 4-4"/>',
+  globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 3.5 5.5 3.5 8.5s-1 6-3.5 8.5c-2.5-2.5-3.5-5.5-3.5-8.5s1-6 3.5-8.5z"/>',
+  trash:'<path d="M5 7h14M10 7V4.5h4V7M6.5 7l1 13h9l1-13"/>',
+  logout:'<path d="M14 4.5h4.5v15H14M10 8l-4 4 4 4M6 12h9"/>',
+  help:'<circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.5M12 16.8v.2"/>',
+  edit:'<path d="M4 20h4l10.5-10.5-4-4L4 16v4z"/><path d="M13 7l4 4"/>',
+  coins:'<ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/>',
+  steps:'<path d="M8 3.5c2 0 3 2 3 4.5S10 13 8 13s-3-2.5-3-5 1-4.5 3-4.5zM16 9c2 0 3 2 3 4.5s-1 5-3 5-3-2.5-3-5S14 9 16 9z"/><path d="M5.5 16h5M13.5 21h5"/>',
+  wave:'<path d="M2.5 9c2 0 2-2 4.75-2S9.5 9 12 9s2.25-2 4.75-2S19 9 21.5 9M2.5 15c2 0 2-2 4.75-2s2.25 2 4.75 2 2.25-2 4.75-2 2.25 2 4.75 2"/>',
+  receipt:'<path d="M6 3.5h12v17l-3-1.8-3 1.8-3-1.8-3 1.8z"/><path d="M9 8.5h6M9 12h6M9 15.5h3"/>',
+  tg:'<path d="M20.5 4.5 3.5 11l5.5 2 2 6 3-4 5 3.5 1.5-14z"/><path d="m9 13 8-5.5"/>',
+};
+const ic = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n] || ''}</svg>`;
+
+// ---------- reference data (из сайтов клубов) ----------
+const CLUBS = {
+  kp: { id:'kp', name:'Команда Первых', short:'Королёв', city:'Королёв', addr:'ул. Маяковского, 2, мкр. Юбилейный', phone:'+7 (495) 120-11-77', email:'op@komanda.fit', tg:'https://t.me/komanda_fit', vk:'https://vk.com/fitnesskorolev', map:'https://yandex.com/maps/org/komanda_pervykh/189352728331/', open:7, close:23, hoursText:'Часы работы подтянутся из CRM', cap:260, feats:['Бассейн 25 м','СПА и хаммам','Бойцовский клуб','Теннисный клуб','Детский клуб'] },
+  os: { id:'os', name:'Образ Силы', short:'Ховрино', city:'Москва', addr:'ул. Базовская, 19, м. Ховрино', phone:'+7 (499) 653-53-43', tg:'https://t.me/obrazfitness', vk:'https://vk.ru/obrazfitness', open:6, close:24, hoursText:'пн–пт 06:00–00:00, сб–вс 07:00–23:00', cap:320, soon:'Скоро станет «Командой Первых»', feats:['5 бассейнов','Зал 1100 м²','Студия сайкла Les Mills','Русская баня и хаммам','Семейная раздевалка'] },
+};
+const club = (id = S.clubId) => CLUBS[id];
+
+const ALLIN_KP = ['Тренажёрный зал и зона свободных весов','Бассейн 25 м и аквааэробика','Групповые программы по расписанию','СПА: хаммам и финская сауна'];
+const CONTRACTS = {
+  kp: [
+    { id:'kp-guest', name:'Гостевой визит', sub:'Бесплатное знакомство с клубом', price:0, kind:'guest', term:{once:true}, feats:['Один визит по предварительной записи','Тренажёрный зал и групповые программы','Нужен паспорт — данные подтверждаем на ресепшене','Пропуск активирует администратор'] },
+    { id:'kp-test', name:'Тест-драйв', sub:'7 дней · 3 безлимитных визита', price:3000, unit:'₽', term:{days:7}, feats:[...ALLIN_KP,'3 визита в любое время'] },
+    { id:'kp-prem', name:'Премиум', badge:'Рекомендуем', sub:'12 месяцев · всё включено', price:6250, unit:'₽/мес', term:{months:12}, freeze:90, guests:50, pt:3, feats:[...ALLIN_KP,'3 персональные тренировки','50 гостевых визитов','Заморозка 90 дней','Рассрочка 0%'] },
+    { id:'kp-base', name:'Базовая', sub:'12 месяцев', price:3826, unit:'₽/мес', term:{months:12}, guests:2, pt:2, feats:[...ALLIN_KP,'2 персональные тренировки','2 гостевых визита','Месяц фитнеса в подарок другу','Рассрочка 0%'] },
+    { id:'kp-100', name:'100 визитов', badge:'Акция до 31.10', sub:'12 месяцев · 100 посещений', price:3334, unit:'₽/мес', term:{months:12}, feats:[...ALLIN_KP,'100 посещений в течение года','Рассрочка 0%'] },
+    { id:'kp-day', name:'Дневная', sub:'12 месяцев · дневные часы', price:3409, unit:'₽/мес', term:{months:12}, feats:[...ALLIN_KP,'Посещение в дневное время','Рассрочка 0%'] },
+    { id:'kp-1m', name:'Базовая на месяц', sub:'1 месяц · без обязательств', price:10900, unit:'₽', term:{months:1}, feats:[...ALLIN_KP] },
+    { id:'kp-3m', name:'Базовая на 3 месяца', sub:'3 месяца · единый платёж', price:23900, old:32700, unit:'₽', term:{months:3}, feats:[...ALLIN_KP] },
+  ],
+  os: [
+    { id:'os-open', name:'День открытых дверей', badge:'23–26 октября', sub:'Бесплатный вход в клуб в Ховрино', price:0, kind:'guest', term:{once:true}, feats:['Бесплатный вход 23–26 октября','5 бассейнов и тренажёрный зал 1100 м²','Групповые программы в 4 залах','Нужен паспорт'] },
+    { id:'os-once', name:'Разовый визит', sub:'Одно посещение', price:699, unit:'₽', term:{once:true}, feats:['Тренажёрный зал','Бассейны','Групповые программы по расписанию'] },
+    { id:'os-unlim', name:'Безлимитная', badge:'−25% на клубную карту', sub:'12 месяцев · безлимитный доступ', price:null, term:{months:12}, freeze:28, feats:['Безлимитный доступ в клуб','5 бассейнов, СПА и баня','Групповые программы','Заморозка 28 дней','Рассрочка без процентов'] },
+    { id:'os-share', name:'Фитнес-шеринг', sub:'Пакет 13 000 минут', price:null, priceText:'8 ₽ / минута', term:{months:12}, feats:['Платите только за минуты в клубе','Тренировки, бассейн и восстановление','Рассрочка без процентов'] },
+    { id:'os-day', name:'Дневная', sub:'12 месяцев · 06:00–17:00', price:null, term:{months:12}, feats:['Посещение с 06:00 до 17:00','Бассейны и тренажёрный зал','Групповые программы'] },
+    { id:'os-visit', name:'Визитная', sub:'Оплата за фактические тренировки', price:null, term:{months:12}, freeze:28, feats:['Безлимитный доступ','Оплата только за визиты','Заморозка 28 дней'] },
+  ],
+};
+const contractDef = id => [...CONTRACTS.kp, ...CONTRACTS.os].find(c => c.id === id);
+const priceLabel = c => c.priceText ? c.priceText : c.price === null ? 'Цена по запросу' : c.price === 0 ? 'Бесплатно' : `${fmt(c.price)} ${c.unit || '₽'}`;
+
+const TR = {
+  t1:{ name:'Евгений Притуляк', role:'Мастер-тренер', dept:'gym', price:3500 },
+  t2:{ name:'Наталия Волкова', role:'Мастер-тренер', dept:'gym', price:3500 },
+  t3:{ name:'Илья Симаков', role:'Мастер-тренер', dept:'gym', price:3500 },
+  t4:{ name:'Мохамед Шаабан', role:'Персональный тренер', dept:'gym', price:3000 },
+  t5:{ name:'Кристина Галактионова', role:'Персональный тренер', dept:'gym', price:3000 },
+  t6:{ name:'Марина Акобия', role:'Мастер-тренер', dept:'pool', price:3200 },
+  t7:{ name:'Руслан Новиков', role:'Мастер-тренер', dept:'pool', price:3200 },
+  t8:{ name:'Роман Нерушаев', role:'Персональный тренер', dept:'fight', price:3000 },
+  t9:{ name:'Анастасия Пастылева', role:'Мастер-тренер', dept:'group', price:3200 },
+  t10:{ name:'Инна Юдина', role:'Мастер-тренер', dept:'group', price:3200 },
+  t11:{ name:'Олеся Синица', role:'Мастер-тренер', dept:'group', price:3200 },
+  t12:{ name:'Дмитрий Думчиков', role:'Персональный тренер', dept:'group', price:3000 },
+  o1:{ name:'Максим Орлов', role:'Инструктор сайкла', dept:'group', price:3000, demo:true },
+  o2:{ name:'Алина Гаврилова', role:'Тренер танцевальных программ', dept:'group', price:3000, demo:true },
+  o3:{ name:'Карина Лебедева', role:'Тренер танцевальных программ', dept:'group', price:3000, demo:true },
+  o4:{ name:'Ольга Смирнова', role:'Тренер бассейна', dept:'pool', price:3200, demo:true },
+  o5:{ name:'Артём Белов', role:'Персональный тренер', dept:'gym', price:3500, demo:true },
+  o6:{ name:'Тимур Сафин', role:'Тренер единоборств', dept:'fight', price:3000, demo:true },
+};
+const CLUB_TR = { kp:['t1','t2','t3','t4','t5','t6','t7','t8','t9','t10','t11','t12'], os:['o5','o1','o2','o3','o4','o6'] };
+const DEPT = { all:'Все', gym:'Тренажёрный зал', pool:'Бассейн', group:'Групповые', fight:'Единоборства' };
+const DEPT_ABOUT = {
+  gym:'Составит программу под вашу цель: снижение веса, сила, рельеф или восстановление после перерыва. Первая встреча — диагностика и техника базовых упражнений.',
+  pool:'Ставит технику кроля и брасса с нуля, помогает подготовиться к заплывам и снять нагрузку со спины. Занятия в 25-метровом бассейне.',
+  group:'Ведёт групповые программы и персональные тренировки по функциональному тренингу, растяжке и mind & body направлениям.',
+  fight:'Бокс и кикбоксинг для начинающих и продолжающих: стойка, удары, работа на лапах и в парах. Перчатки можно взять в клубе.',
+};
+
+const CATS = { all:'Все', water:'Вода', power:'Сила', mind:'Тело и дыхание', dance:'Танцы', fight:'Единоборства', cardio:'Кардио' };
+const CLASSES = {
+  kp: [
+    { n:'Аквааэробика', room:'Бассейн 25 м', dur:45, cap:20, cat:'water', tr:['t6','t7'], desc:'Упражнения в воде с мягкой нагрузкой на суставы. Подойдёт для любого уровня подготовки.' },
+    { n:'Йога', room:'Зал групповых программ', dur:60, cap:18, cat:'mind', tr:['t9','t11'], desc:'Асаны, дыхание и баланс. Коврики есть в зале.' },
+    { n:'Пилатес', room:'Зал групповых программ', dur:55, cap:16, cat:'mind', tr:['t10','t11'], desc:'Глубокие мышцы кора, осанка и контроль движения.' },
+    { n:'Функциональный тренинг', room:'Зал групповых программ', dur:55, cap:16, cat:'power', tr:['t12','t9'], desc:'Круговая тренировка с собственным весом, гирями и петлями.' },
+    { n:'Силовая со штангой', room:'Зал групповых программ', dur:55, cap:20, cat:'power', tr:['t12','t10'], desc:'Тренировка всего тела с лёгкой штангой под музыку. Вес подбираете сами.' },
+    { n:'Зумба', room:'Танцевальный зал', dur:55, cap:25, cat:'dance', tr:['t9','t11'], desc:'Латиноамериканские ритмы и простые связки. Опыт танцев не нужен.' },
+    { n:'Стретчинг', room:'Зал групповых программ', dur:55, cap:18, cat:'mind', tr:['t10'], desc:'Растяжка всех групп мышц и мобильность суставов.' },
+    { n:'Бокс', room:'Бойцовский клуб', dur:60, cap:12, cat:'fight', tr:['t8'], desc:'Стойка, базовые удары, работа на мешках и лапах.' },
+    { n:'Кикбоксинг', room:'Бойцовский клуб', dur:60, cap:12, cat:'fight', tr:['t8'], desc:'Удары руками и ногами, связки и функциональная подготовка.' },
+    { n:'МФР', room:'Зал групповых программ', dur:45, cap:16, cat:'mind', tr:['t11'], desc:'Миофасциальный релиз с роллами и мячами для восстановления.' },
+  ],
+  os: [
+    { n:'Сайкл', room:'Студия сайкла', dur:45, cap:24, cat:'cardio', tr:['o1'], desc:'Интервальная тренировка на велотренажёрах по программе Les Mills.' },
+    { n:'Зумба', room:'Зал 2', dur:55, cap:25, cat:'dance', tr:['o2'], desc:'Танцевальная кардиотренировка под латиноамериканские ритмы.' },
+    { n:'Латина', room:'Зал 2', dur:55, cap:20, cat:'dance', tr:['o2','o3'], desc:'Сальса и ча-ча-ча в соло-формате.' },
+    { n:'Бачата', room:'Зал 2', dur:60, cap:20, cat:'dance', tr:['o3'], desc:'Базовые шаги и связки бачаты. Пара не нужна.' },
+    { n:'Йога', room:'Зал 3', dur:60, cap:18, cat:'mind', tr:['o4'], desc:'Хатха-йога: асаны, дыхание и расслабление.' },
+    { n:'Подвесной тренинг', room:'Зал 1', dur:50, cap:14, cat:'power', tr:['o5'], desc:'Тренировка на петлях: кор, баланс и сила.' },
+    { n:'ВИИТ', room:'Зал 1', dur:45, cap:20, cat:'cardio', tr:['o5','o1'], desc:'Высокоинтенсивные интервалы. Короткие отрезки работы и отдыха.' },
+    { n:'Фитнес-единоборства', room:'Зал 4', dur:55, cap:16, cat:'fight', tr:['o6'], desc:'Удары и связки из единоборств без контакта — в формате кардио.' },
+    { n:'Аквааэробика', room:'Бассейн 25 м', dur:45, cap:20, cat:'water', tr:['o4'], desc:'Упражнения в воде с мягкой нагрузкой на суставы.' },
+    { n:'Силовой тренинг', room:'Зал 1', dur:55, cap:18, cat:'power', tr:['o6','o5'], desc:'Тренировка с отягощениями на все группы мышц.' },
+  ],
+};
+const SLOTS = ['07:00','08:00','09:00','10:00','11:00','12:00','13:00','17:00','18:00','19:00','20:00','21:00'];
+
+const PRODUCTS = [
+  { id:'p1', n:'Протеиновый коктейль', sub:'Фитнес-бар · 300 мл', price:350, icon:'cup', tone:'blue' },
+  { id:'p2', n:'Изотоник', sub:'0,5 л', price:180, icon:'bottle', tone:'magenta' },
+  { id:'p3', n:'Вода', sub:'0,5 л', price:80, icon:'drop', tone:'sand' },
+  { id:'p4', n:'Капучино', sub:'250 мл', price:190, icon:'cup', tone:'wine' },
+  { id:'p5', n:'Американо', sub:'250 мл', price:150, icon:'cup', tone:'ink' },
+  { id:'p6', n:'Протеиновый батончик', sub:'60 г', price:160, icon:'flame', tone:'magenta' },
+  { id:'p7', n:'Полотенце', sub:'Аренда на визит', price:150, icon:'towel', tone:'sand' },
+  { id:'p8', n:'Замок для шкафчика', sub:'Навесной, с ключами', price:350, icon:'lock', tone:'ink' },
+  { id:'p9', n:'Персональная тренировка', sub:'60 минут с тренером', price:3000, icon:'dumbbell', tone:'blue' },
+  { id:'p10', n:'Подарочный сертификат', sub:'Номинал 5 000 ₽', price:5000, icon:'gift', tone:'wine' },
+];
+const MINI = {
+  kp: [
+    { id:'mk1', n:'Плавание для взрослых', when:'Вт, Чт · 20:00', start:'с 28 октября', tr:'t7', price:6400, per:'8 занятий', spots:3, tone:'blue', icon:'wave' },
+    { id:'mk2', n:'Бокс с нуля', when:'Пн, Ср · 19:00', start:'с 27 октября', tr:'t8', price:5600, per:'8 занятий', spots:5, tone:'wine', icon:'dumbbell' },
+    { id:'mk3', n:'Настольный теннис', when:'Сб · 12:00', start:'25 октября', tr:null, trText:'Тренер теннисного клуба', price:1250, per:'занятие', spots:2, tone:'magenta', icon:'users' },
+    { id:'mk4', n:'Пилатес в мини-группе', when:'Пн, Пт · 10:00', start:'с 27 октября', tr:'t10', price:4800, per:'8 занятий', spots:4, tone:'sand', icon:'sun' },
+  ],
+  os: [
+    { id:'mo1', n:'Сайкл для новичков', when:'Вт, Чт · 19:00', start:'с 28 октября', tr:'o1', price:4800, per:'8 занятий', spots:6, tone:'wine', icon:'flame' },
+    { id:'mo2', n:'Бачата с нуля', when:'Ср, Пт · 20:00', start:'с 29 октября', tr:'o3', price:5200, per:'8 занятий', spots:3, tone:'magenta', icon:'users' },
+    { id:'mo3', n:'Йога для спины', when:'Сб, Вс · 11:00', start:'с 25 октября', tr:'o4', price:4400, per:'8 занятий', spots:5, tone:'sand', icon:'sun' },
+    { id:'mo4', n:'Плавание для взрослых', when:'Пн, Ср · 21:00', start:'с 27 октября', tr:'o4', price:6400, per:'8 занятий', spots:2, tone:'blue', icon:'wave' },
+  ],
+};
+const CHALLENGES = [
+  { id:'steps', title:'25 дней движения', goal:'250 000 шагов', reward:300, icon:'steps', tone:'magenta', unit:'шагов', total:250000 },
+  { id:'visits', title:'12 тренировок за месяц', goal:'Отмечайтесь на входе по QR', reward:500, icon:'dumbbell', tone:'blue', unit:'тренировок', total:12 },
+  { id:'swim', title:'10 км в бассейне', goal:'Отмечайте дистанцию после заплыва', reward:400, icon:'wave', tone:'sand', unit:'км', total:10 },
+  { id:'early', title:'Ранняя птица', goal:'8 визитов до 9:00', reward:250, icon:'sun', tone:'wine', unit:'визитов', total:8 },
+];
+const LOAD_CURVE = [0,0,0,0,0,0,.12,.32,.42,.36,.27,.22,.24,.26,.22,.25,.34,.58,.84,.96,.86,.62,.36,.16];
+const PEOPLE = ['Анна','Максим','Ирина','Денис','Ольга','Павел','Мария','Артём','Елена','Сергей','Юлия','Глеб','Дарья','Кирилл','Вера','Лев'];
+
+// ---------- state ----------
+const KEY = 'komanda-app-demo-v1';
+function fresh(){ return { user:null, clubId:'kp', contract:null, lead:null, bookings:[], purchases:[], points:0, pointsLog:[], joined:{}, locker:null, notifs:[], read:false, chat:[], tab:'home', giftClosed:false, prefs:{push:true, sms:false, visible:true}, minis:[] }; }
+let S = (() => { try { const v = JSON.parse(localStorage.getItem(KEY)); return v && typeof v === 'object' ? Object.assign(fresh(), v) : fresh(); } catch (e) { return fresh(); } })();
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+let UI = { day:0, cat:'all', schedMode:'all', dept:'all', shopTab:'shop' };
+let TIMERS = [];
+const clearTimers = () => { TIMERS.forEach(t => clearInterval(t)); TIMERS = []; };
+
+// ---------- domain ----------
+function makeContract(def, clubId){
+  const start = new Date(T0);
+  let end = new Date(T0);
+  if (def.term.days) end = addDays(T0, def.term.days);
+  if (def.term.months) end = addMonths(T0, def.term.months);
+  return { id:def.id, club:clubId, name:def.name, kind:def.kind || 'paid', start:iso(start), end:iso(end), freezeTotal:def.freeze || 0, freezeLeft:def.freeze || 0, freeze:null, guestLeft:def.guests || 0, ptLeft:def.pt || 0, guestActive:false };
+}
+function cstate(){
+  const c = S.contract;
+  if (!c) return S.lead ? { k:'lead' } : { k:'none' };
+  if (c.kind === 'guest') return { k:'guest' };
+  const left = daysBetween(T0, parse(c.end));
+  if (c.freeze && parse(c.freeze.from) <= T0 && T0 <= parse(c.freeze.to)) return { k:'frozen', left };
+  if (left < 0) return { k:'expired', left };
+  return { k: left <= 14 ? 'ending' : 'active', left };
+}
+const isGuest = () => !!(S.user && S.user.guest);
+function needAuth(){ if (!isGuest()) return false; open('sheet', `${sheetHead('Нужен аккаунт')}<div class="scroll g"><div class="empty" style="padding-top:12px">${ic('user')}<b>Войдите или станьте клиентом</b><span>Запись, вход по QR, покупки и абонементы доступны после регистрации. Это займёт пару минут.</span></div></div><div class="footer g stack"><button class="btn block" data-act="authNew">Стать клиентом</button><button class="btn block ghost" data-act="authLogin">Я уже клиент</button></div>`); return true; }
+const canTrain = () => ['active','ending','guest'].includes(cstate().k);
+function addPoints(n, why){ S.points += n; S.pointsLog.unshift({ n, why, d:iso(new Date()) }); }
+function notify(t, s){ S.notifs.unshift({ t, s, d:iso(new Date()) }); S.read = false; }
+
+function dayClasses(clubId, off){
+  const d = addDays(T0, off), key = iso(d), r = rng(clubId + key);
+  const slots = [...SLOTS];
+  for (let i = slots.length - 1; i > 0; i--){ const j = Math.floor(r() * (i + 1)); [slots[i], slots[j]] = [slots[j], slots[i]]; }
+  const n = 7 + Math.floor(r() * 3);
+  const cat = CLASSES[clubId];
+  return slots.slice(0, n).sort().map(t => {
+    const c = cat[Math.floor(r() * cat.length)];
+    const tid = c.tr[Math.floor(r() * c.tr.length)];
+    const id = `${clubId}|${key}|${t}`;
+    const mine = S.bookings.some(b => b.id === id);
+    const base = Math.floor(c.cap * (.3 + r() * .72));
+    const booked = Math.min(c.cap, base + (mine ? 1 : 0));
+    const past = off === 0 && toMin(t) < nowMin();
+    return { ...c, id, key, date:d, off, t, end:fromMin(toMin(t) + c.dur), tid, trainer:TR[tid], booked, mine, past, clubId };
+  });
+}
+function findClass(id){ const [cid, key] = id.split('|'); const off = daysBetween(T0, parse(key)); return dayClasses(cid, off).find(c => c.id === id); }
+function clubLoad(id){
+  const c = CLUBS[id], h = new Date().getHours(), r = rng(id + iso(T0) + h);
+  const open = h >= c.open && h < c.close;
+  const now = open ? Math.round(LOAD_CURVE[h] * c.cap * (.9 + r() * .2)) : 0;
+  const ratio = now / c.cap;
+  return { open, now, lvl: !open ? 'closed' : ratio < .3 ? 'ok' : ratio < .6 ? 'warn' : 'bad' };
+}
+function trainerSlots(tid){
+  const out = [];
+  for (let off = 0; off < 4; off++){
+    const d = addDays(T0, off), r = rng(tid + iso(d)); const s = [];
+    for (let h = 8; h <= 21; h++){ if (r() < .38 && !(off === 0 && h * 60 <= nowMin() + 30)) s.push(`${String(h).padStart(2,'0')}:00`); }
+    out.push({ d, off, s:s.filter(t => !S.bookings.some(b => b.type === 'pt' && b.tid === tid && b.key === iso(d) && b.t === t)) });
+  }
+  return out;
+}
+const futureBookings = () => S.bookings.filter(b => { const d = parse(b.key); return d > T0 || (iso(d) === iso(T0) && toMin(b.t) >= nowMin() - 60); }).sort((a, b) => (a.key + a.t).localeCompare(b.key + b.t));
+
+// ---------- UI infrastructure ----------
+const screen = $('#screen'), layerRoot = $('#layer');
+let STACK = [];
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2600); }
+function open(kind, html, mount){
+  const el = document.createElement('div');
+  el.className = `layer ${kind}`;
+  el.innerHTML = kind === 'sheet' ? `<div class="backdrop" data-act="close"></div><div class="panel" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div>` : `<div role="dialog" aria-modal="true" style="display:flex;flex-direction:column;height:100%">${html}</div>`;
+  layerRoot.appendChild(el); STACK.push(el);
+  if (mount) el._cleanup = mount(el);
+  return el;
+}
+function close(all){
+  const n = all ? STACK.length : 1;
+  for (let i = 0; i < n; i++){
+    const el = STACK.pop(); if (!el) return;
+    if (typeof el._cleanup === 'function') el._cleanup();
+    el.classList.add('out'); setTimeout(() => el.remove(), 210);
+  }
+}
+const pageHead = (title, extra = '') => `<div class="ph-head g"><button class="ib" data-act="close" aria-label="Назад">${ic('back')}</button><h2>${esc(title)}</h2><div>${extra}</div></div>`;
+const sheetHead = (title) => `<div class="ph-head g"><span></span><h2>${esc(title)}</h2><button class="ib" data-act="close" aria-label="Закрыть">${ic('close')}</button></div>`;
+function refresh(){ save(); if (S.user) { renderMain(true); } }
+
+// ---------- установка на телефон (работает в PWA-версии) ----------
+const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const canOfferInstall = () => !!window.PWA_MODE && !isStandalone();
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; });
+const installBtn = () => canOfferInstall() ? `<button class="install" data-act="install">${ic('plus')}<span class="grow"><b>Установить на телефон</b><br><span class="small mute">Иконка на рабочем столе, запуск без браузера</span></span>${ic('right','dim')}</button>` : '';
+function openInstall(){
+  if (deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.finally(() => deferredPrompt = null); return; }
+  const ios = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const steps = ios
+    ? ['Откройте эту страницу в Safari','Нажмите «Поделиться» — квадрат со стрелкой внизу экрана','Выберите «На экран «Домой»» и нажмите «Добавить»']
+    : ['Откройте эту страницу в Chrome','Нажмите меню ⋮ в правом верхнем углу','Выберите «Установить приложение» или «Добавить на главный экран»'];
+  open('sheet', `${sheetHead('Установить приложение')}<div class="scroll g"><p class="mute">Приложение появится на рабочем столе с иконкой «Команды Первых» и будет открываться на весь экран.</p><ol class="steps-i" style="padding:0">${steps.map(t => `<li>${esc(t)}</li>`).join('')}</ol></div><div class="footer g"><button class="btn block ghost" data-act="close">Понятно</button></div>`);
+}
+
+// ---------- MAIN ----------
+const TABS = [['home','Главная','grid'],['chall','Челленджи','trophy'],['sched','Расписание','cal'],['coach','Тренеры','users'],['me','Профиль','user']];
+function renderMain(keepScroll){
+  document.documentElement.dataset.club = S.clubId;
+  const prev = keepScroll && $('#view') ? $('#view').scrollTop : 0;
+  screen.innerHTML = `<div class="view" id="view"></div>
+    <button class="fab" data-act="chat" aria-label="Чат с менеджером клуба" id="fab">${ic('chat')}</button>
+    <div id="strip"></div>
+    <nav class="tabbar" aria-label="Разделы">${TABS.map(([k, l, i]) => `<button class="tab ${S.tab === k ? 'on' : ''}" data-act="tab" data-k="${k}" aria-current="${S.tab === k ? 'page' : 'false'}">${ic(i)}<span>${l}</span></button>`).join('')}</nav>`;
+  renderTab();
+  if (prev) $('#view').scrollTop = prev;
+}
+function renderTab(){
+  clearTimers();
+  const v = $('#view');
+  const f = { home:homeView, chall:challView, sched:schedView, coach:coachView, me:meView }[S.tab] || homeView;
+  v.innerHTML = f();
+  $('#fab').hidden = S.tab !== 'home';
+  // strip
+  const st = cstate(), sEl = $('#strip');
+  let strip = '';
+  if (isGuest()) strip = `<div class="strip info g"><span>Вы смотрите приложение как гость</span><button data-act="authNew">Войти</button></div>`;
+  else if (st.k === 'ending') strip = `<div class="strip warn g"><span>Абонемент заканчивается через ${st.left} ${plural(st.left,['день','дня','дней'])}</span><button data-act="renew">Продлить</button></div>`;
+  else if (st.k === 'expired') strip = `<div class="strip bad g"><span>Срок действия абонемента истёк</span><button data-act="renew">Продлить</button></div>`;
+  else if (st.k === 'none') strip = `<div class="strip info g"><span>Абонемент не оформлен</span><button data-act="renew">Выбрать</button></div>`;
+  else if (st.k === 'lead') strip = `<div class="strip info g"><span>Заявка у менеджера — скоро позвоним</span><button data-act="chat">Чат</button></div>`;
+  sEl.innerHTML = strip;
+  $('#fab').style.setProperty('--fab-b', (strip ? 64 + 34 + 14 : 64 + 14) + 'px');
+  if (S.tab === 'home') mountHero();
+  if (S.tab === 'sched'){ const on = $('.day.on'); on && on.scrollIntoView({ inline:'center', block:'nearest' }); }
+}
+
+// ----- HOME -----
+function heroSlides(){
+  return S.clubId === 'kp' ? [
+    { tone:'blue', big:'25 м', eb:'Бассейн', h:'Аквааэробика каждый день', p:'Запишитесь на ближайшее занятие в бассейне', btn:'Записаться', act:'goSched', cat:'water' },
+    { tone:'magenta', big:'100', eb:'Акция до 31 октября', h:'100 визитов за 3 334 ₽ в месяц', p:'Абонемент на год с рассрочкой 0%', btn:'Подробнее', act:'renew' },
+    { tone:'ink', big:'БОКС', eb:'Бойцовский клуб', h:'Бокс с нуля в мини-группе', p:'8 занятий, старт 27 октября', btn:'Смотреть', act:'mini' },
+  ] : [
+    { tone:'wine', big:'23–26', eb:'День открытых дверей', h:'Вход в клуб бесплатный', p:'23–26 октября в Ховрино — приходите с друзьями', btn:'Записаться', act:'renew' },
+    { tone:'magenta', big:'−25%', eb:'Клубная карта', h:'Скидка 25% на клубную карту', p:'Рассрочка без процентов от клуба и банка-партнёра', btn:'Получить', act:'renew' },
+    { tone:'blue', big:'45′', eb:'Студия сайкла', h:'Сайкл по программе Les Mills', p:'Интервальная тренировка за 45 минут', btn:'В расписание', act:'goSched', cat:'cardio' },
+  ];
+}
+function homeView(){
+  const c = club(), L = { kp:clubLoad('kp'), os:clubLoad('os') };
+  const slides = heroSlides();
+  const unread = !S.read && S.notifs.length;
+  const gift = S.purchases.find(p => p.gift && !p.used);
+  const fb = futureBookings().slice(0, 2);
+  return `
+  <header class="hd g">
+    <div class="brand"><span class="mark mark-kp" role="img" aria-label="Команда Первых"></span></div>
+    <button class="clubchip" data-act="pickClub">${ic('pin')}<span>${esc(c.short)}</span>${ic('down')}</button>
+    <button class="icon-btn" data-act="notifs" aria-label="Уведомления">${ic('bell')}${unread ? '<i class="dot"></i>' : ''}</button>
+  </header>
+  <section class="hero">
+    <div class="slides" id="slides">${slides.map((s, i) => `
+      <article class="slide t-${s.tone}">
+        <span class="big" aria-hidden="true">${esc(s.big)}</span>
+        <span class="ring" style="width:220px;height:220px;right:-70px;bottom:-110px;border:1.5px solid currentColor;opacity:.25"></span>
+        <span class="eyebrow">${esc(s.eb)}</span>
+        <h3>${esc(s.h)}</h3>
+        <p>${esc(s.p)}</p>
+        <button class="btn" data-act="${s.act}" ${s.cat ? `data-cat="${s.cat}"` : ''}>${esc(s.btn)}</button>
+      </article>`).join('')}</div>
+    <div class="dots" id="dots">${slides.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('')}</div>
+  </section>
+  ${gift && !S.giftClosed ? `<div class="g"><div class="giftbar">${ic('gift')}<button class="grow" data-act="purchases" style="text-align:left"><b>Добро пожаловать!</b><small>Ваш подарок от клуба — в «Моих покупках»</small></button><button class="x" data-act="giftClose" aria-label="Скрыть">${ic('close')}</button></div></div>` : ''}
+  <div class="hscroll" style="margin-top:16px">
+    <button class="tile primary" data-act="qr">${ic('qr')}<b>Вход<br>в клуб</b></button>
+    <button class="tile" data-act="shop">${ic('bag')}<b>Магазин</b></button>
+    <button class="tile" data-act="mini">${ic('users')}<b>Мини-группы</b></button>
+    <button class="tile" data-act="locker">${ic('lock')}<b>Мой шкафчик</b></button>
+    <button class="tile" data-act="freeze">${ic('snow')}<b>Заморозка</b></button>
+    <button class="tile" data-act="invite">${ic('gift')}<b>Пригласить друга</b></button>
+  </div>
+  ${fb.length ? `<section class="sec g"><div class="sec-head"><h2 class="h2">Мои записи</h2><button class="link" data-act="myBookings">Все</button></div>
+    <div class="stack">${fb.map(bookingCard).join('')}</div></section>` : ''}
+  <section class="sec g">
+    <div class="sec-head"><h2 class="h2">Загруженность клубов</h2><span class="tiny dim">сегодня по часам</span></div>
+    ${['kp','os'].map(id => loadCard(id, L[id])).join('')}
+  </section>
+  <section class="sec">
+    <div class="sec-head g"><h2 class="h2">Бонусы и акции</h2></div>
+    <div class="hscroll">
+      <button class="promo tone-sand" data-act="review">${ic('star')}<div><b>Отзыв на Яндекс Картах — 500 баллов</b><br><small>Расскажите о клубе и получите баллы на счёт</small></div></button>
+      <button class="promo tone-blue" data-act="invite">${ic('gift')}<div><b>Месяц фитнеса другу</b><br><small>Поделитесь промокодом — подарим другу месяц</small></div></button>
+      <button class="promo tone-wine" data-act="renew">${ic('card')}<div><b>Рассрочка 0%</b><br><small>Годовой абонемент частями без переплаты</small></div></button>
+    </div>
+  </section>
+  <section class="sec g">
+    <div class="sec-head"><h2 class="h2">${esc(c.name)} · ${esc(c.short)}</h2><button class="link" data-act="contacts">Контакты</button></div>
+    <div class="card" style="padding-block:4px">
+      <div class="contact-row">${ic('pin')}<div class="grow"><b>${esc(c.addr)}</b><div class="small mute">${esc(c.city)}</div></div></div>
+      <div class="contact-row">${ic('clock')}<div class="grow small">${esc(c.hoursText)}</div></div>
+      <div class="contact-row">${ic('phone')}<div class="grow"><b class="num">${esc(c.phone)}</b></div><button class="btn sm ghost" data-act="copy" data-v="${esc(c.phone)}">Копировать</button></div>
+    </div>
+  </section>`;
+}
+function bookingCard(b){
+  const d = parse(b.key);
+  const rel = daysBetween(T0, d) === 0 ? 'Сегодня' : daysBetween(T0, d) === 1 ? 'Завтра' : DOW[d.getDay()];
+  return `<button class="card bk" data-act="${b.type === 'pt' ? 'ptInfo' : 'cls'}" data-id="${esc(b.id)}" style="width:100%;text-align:left">
+    <div class="when"><small>${rel}</small><b class="num">${b.t}</b></div>
+    <div class="grow"><b style="display:block;font-size:15px">${esc(b.name)}</b><span class="small mute">${esc(b.sub)}</span></div>
+    ${ic('right','dim')}
+  </button>`;
+}
+function loadCard(id, L){
+  const c = CLUBS[id], h = new Date().getHours();
+  const hrs = []; for (let x = c.open; x < Math.min(c.close, 24); x++) hrs.push(x);
+  const max = Math.max(...hrs.map(x => LOAD_CURVE[x]));
+  const label = { closed:['plain','Клуб закрыт'], ok:['ok','Свободно'], warn:['warn','Средняя загрузка'], bad:['bad','Много людей'] }[L.lvl];
+  const r = rng(id + iso(T0)); const ppl = PEOPLE.slice().sort(() => r() - .5).slice(0, 4);
+  return `<button class="card load" data-act="contacts" data-id="${id}">
+    <div class="load-top">
+      <div class="grow"><b>${esc(c.name)}</b><span class="small mute">${esc(c.short)} · ${esc(c.addr.split(',')[0])}</span>${c.soon ? `<div style="margin-top:6px"><span class="tag-soon">${esc(c.soon)}</span></div>` : ''}</div>
+      <div class="load-num"><b class="num">${L.now}</b><small>сейчас в клубе</small></div>
+    </div>
+    <div class="bars" aria-hidden="true">${hrs.map(x => `<i class="${x === h ? 'now' : x < h ? 'past' : ''}" style="height:${Math.max(6, LOAD_CURVE[x] / max * 100)}%"></i>`).join('')}</div>
+    <div class="bars-x" aria-hidden="true"><span>${String(c.open).padStart(2,'0')}:00</span><span>${String(Math.round((c.open + c.close) / 2)).padStart(2,'0')}:00</span><span>${String(c.close % 24).padStart(2,'0')}:00</span></div>
+    <div class="load-foot"><span class="pill ${label[0]}">${label[1]}</span>
+      <span class="avs">${L.now ? ppl.map(p => `<span class="av" style="background:${avColor(p)}">${p[0]}</span>`).join('') + `<span class="av more">+${Math.max(0, L.now - 4)}</span>` : ''}</span></div>
+  </button>`;
+}
+function mountHero(){
+  const sc = $('#slides'), dots = $('#dots'); if (!sc) return;
+  const n = sc.children.length;
+  const idx = () => Math.round(sc.scrollLeft / (sc.clientWidth || 1));
+  sc.addEventListener('scroll', () => { const i = idx(); [...dots.children].forEach((d, k) => d.classList.toggle('on', k === i)); }, { passive:true });
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    let hold = false; sc.addEventListener('pointerdown', () => hold = true); sc.addEventListener('pointerup', () => setTimeout(() => hold = false, 4000));
+    TIMERS.push(setInterval(() => { if (hold || STACK.length) return; const i = (idx() + 1) % n; sc.scrollTo({ left:i * sc.children[0].getBoundingClientRect().width + i * 10, behavior:'smooth' }); }, 5500));
+  }
+}
+
+// ----- CHALLENGES -----
+function challView(){
+  return `<section class="ch-hero g">
+      <span class="ring" style="width:260px;height:260px;right:-80px;top:-90px;border:2px solid rgba(255,255,255,.28)"></span>
+      <span class="ring" style="width:140px;height:140px;right:40px;top:30px;background:var(--magenta)"></span>
+      <div class="row" style="justify-content:space-between"><span class="eyebrow" style="opacity:.85">Челленджи сети</span><button class="pts" data-act="points">${ic('coins')}<span class="num">${fmt(S.points)}</span> баллов</button></div>
+      <h1>Выбери свой челлендж</h1>
+      <p>Тренируйтесь в клубе и копите баллы. Ими можно оплатить кофе, коктейли и товары в клубе.</p>
+    </section>
+    <section class="sec g" style="margin-top:22px"><div class="stack">${CHALLENGES.map(ch => {
+      const j = S.joined[ch.id];
+      const pct = j ? Math.round(j.p * 100) : 0;
+      const doneVal = j ? (ch.total >= 1000 ? fmt(Math.round(j.p * ch.total)) : Math.round(j.p * ch.total)) : 0;
+      return `<div class="card ch">
+        <div class="ch-top"><div class="ch-ico tone-${ch.tone}">${ic(ch.icon)}</div>
+          <div class="grow"><b style="display:block;font-size:16px">${esc(ch.title)}</b><span class="small mute">${esc(ch.goal)}</span><div class="reward" style="margin-top:4px">+${ch.reward} баллов</div></div></div>
+        ${j ? `<div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>
+          <div class="row small"><span class="grow mute num">${doneVal} из ${ch.total >= 1000 ? fmt(ch.total) : ch.total} ${ch.unit}</span><b class="num">${pct}%</b></div>
+          ${ch.id === 'swim' ? `<button class="btn sm ghost" data-act="chLog" data-id="${ch.id}">${ic('plus')} Добавить 1 км</button>` : ''}`
+        : `<button class="btn sm" data-act="chJoin" data-id="${ch.id}" style="align-self:flex-start">Присоединиться</button>`}
+      </div>`; }).join('')}</div></section>
+    <section class="sec g">
+      <h2 class="h2">Как получить баллы</h2>
+      <div class="card" style="padding-block:4px">
+        ${[['qr','Визит в клуб по QR','+10'],['star','Отзыв на Яндекс Картах','+500'],['gift','Друг купил абонемент','+1 000'],['bag','Покупки в приложении','10% от суммы']].map(([i, t, v]) => `<div class="contact-row">${ic(i)}<span class="grow">${t}</span><b class="reward">${v}</b></div>`).join('')}
+      </div>
+    </section>`;
+}
+
+// ----- SCHEDULE -----
+function schedView(){
+  const c = club();
+  const days = Array.from({ length:7 }, (_, i) => addDays(T0, i));
+  let list = UI.schedMode === 'mine' ? null : dayClasses(S.clubId, UI.day).filter(x => UI.cat === 'all' || x.cat === UI.cat);
+  const cats = Object.keys(CATS).filter(k => k === 'all' || CLASSES[S.clubId].some(x => x.cat === k));
+  return `<header class="sched-hd g">
+      <button class="title-btn" data-act="pickClub">${esc(c.short)} ${ic('down')}</button>
+      <div class="small mute" style="margin-top:2px">${esc(c.name)} · ${esc(c.addr)}</div>
+      <div class="seg" style="margin-top:14px"><button class="${UI.schedMode === 'all' ? 'on' : ''}" data-act="schedMode" data-k="all">Групповые</button><button class="${UI.schedMode === 'mine' ? 'on' : ''}" data-act="schedMode" data-k="mine">Мои записи</button></div>
+    </header>
+    ${UI.schedMode === 'mine' ? myBookingsList() : `
+    <div class="days" role="tablist">${days.map((d, i) => `<button class="day ${UI.day === i ? 'on' : ''}" data-act="day" data-i="${i}" role="tab" aria-selected="${UI.day === i}"><small>${i === 0 ? 'Сегодня' : DOW[d.getDay()]}</small><b class="num">${d.getDate()}</b></button>`).join('')}</div>
+    <div class="chips">${cats.map(k => `<button class="chip ${UI.cat === k ? 'on' : ''}" data-act="cat" data-k="${k}">${CATS[k]}</button>`).join('')}</div>
+    <div class="g">${list.length ? list.map(clsRow).join('') : `<div class="empty">${ic('cal')}<b>Нет занятий</b><span>В этот день нет занятий выбранного направления</span></div>`}</div>`}`;
+}
+function clsRow(x){
+  const pct = x.booked / x.cap, full = x.booked >= x.cap;
+  return `<button class="cls ${x.past ? 'past' : ''}" data-act="cls" data-id="${esc(x.id)}">
+    <div class="t"><b class="num">${x.t}</b><small class="num">${x.end}</small></div>
+    <div class="ini" style="background:${x.mine ? 'var(--club)' : 'var(--club-soft)'};color:${x.mine ? 'var(--club-ink)' : 'var(--fg)'}">${initials(x.trainer.name)}</div>
+    <div class="grow"><div class="nm">${esc(x.n)}</div><div class="sub">${x.mine ? `<span class="mine">${ic('check')}Вы записаны</span> · ` : ''}${esc(x.trainer.name.split(' ')[0])} · ${esc(x.room)}</div></div>
+    <div class="fill"><small class="num">${full ? 'мест нет' : `${x.cap - x.booked} ${plural(x.cap - x.booked, ['место','места','мест'])}`}</small><div class="meter ${full ? 'full' : ''}"><i style="width:${Math.round(pct * 100)}%"></i></div></div>
+  </button>`;
+}
+function myBookingsList(){
+  const fb = futureBookings();
+  if (!fb.length) return `<div class="empty g">${ic('cal')}<b>Записей пока нет</b><span>Выберите занятие в расписании или запишитесь к тренеру</span><button class="btn sm" data-act="schedMode" data-k="all">Открыть расписание</button></div>`;
+  return `<div class="g stack" style="margin-top:16px">${fb.map(bookingCard).join('')}</div>`;
+}
+function openClass(id){
+  const x = findClass(id); if (!x) return toast('Занятие не найдено');
+  const full = x.booked >= x.cap;
+  const st = cstate();
+  let action;
+  if (x.mine) action = `<button class="btn block danger" data-act="unbook" data-id="${esc(x.id)}">Отменить запись</button>`;
+  else if (x.past) action = `<button class="btn block" disabled>Занятие уже началось</button>`;
+  else if (!canTrain()) action = `<p class="hint" style="text-align:center;margin-bottom:10px">${st.k === 'frozen' ? 'Абонемент заморожен — запись откроется после разморозки' : 'Для записи нужен действующий абонемент'}</p><button class="btn block" data-act="renew">Выбрать абонемент</button>`;
+  else if (full) action = `<button class="btn block ghost" data-act="waitlist" data-id="${esc(x.id)}">Встать в лист ожидания</button>`;
+  else action = `<button class="btn block club" data-act="book" data-id="${esc(x.id)}">Записаться</button>`;
+  open('sheet', `${sheetHead(CATS[x.cat])}
+    <div class="scroll g">
+      <h3 class="h3">${esc(x.n)}</h3>
+      <p class="mute" style="margin-top:6px">${x.off === 0 ? 'Сегодня' : DOWL[x.date.getDay()][0].toUpperCase() + DOWL[x.date.getDay()].slice(1)}, ${dfmt(x.date)} · <span class="num">${x.t}–${x.end}</span> · ${x.dur} мин</p>
+      <button class="tr" data-act="trainer" data-id="${x.tid}" style="border-bottom:1px solid var(--line);margin-top:8px">
+        <div class="ph" style="background:${avColor(x.trainer.name)};width:48px;height:48px;font-size:15px;border-radius:14px">${initials(x.trainer.name)}</div>
+        <div class="grow"><div class="role">${esc(x.trainer.role)}</div><div class="nm">${esc(x.trainer.name)}</div></div>${ic('right','dim')}
+      </button>
+      <div class="sumrow"><span>Зал</span><b>${esc(x.room)}</b></div>
+      <div class="sumrow"><span>Клуб</span><b>${esc(CLUBS[x.clubId].name)}, ${esc(CLUBS[x.clubId].short)}</b></div>
+      <div class="sumrow"><span>Записано</span><b class="num">${x.booked} из ${x.cap}</b></div>
+      <p style="margin-top:14px;color:var(--mute)">${esc(x.desc)}</p>
+    </div>
+    <div class="footer g">${action}</div>`);
+}
+
+// ----- TRAINERS -----
+function coachView(){
+  const ids = CLUB_TR[S.clubId].filter(t => UI.dept === 'all' || TR[t].dept === UI.dept);
+  const depts = Object.keys(DEPT).filter(k => k === 'all' || CLUB_TR[S.clubId].some(t => TR[t].dept === k));
+  return `<header class="sched-hd g">
+      <button class="title-btn" data-act="pickClub">Тренеры ${ic('down')}</button>
+      <div class="small mute" style="margin-top:2px">${esc(club().name)} · ${esc(club().short)}</div>
+    </header>
+    <div class="chips">${depts.map(k => `<button class="chip ${UI.dept === k ? 'on' : ''}" data-act="dept" data-k="${k}">${DEPT[k]}</button>`).join('')}</div>
+    <div class="g">${ids.map(t => { const x = TR[t]; return `<button class="tr" data-act="trainer" data-id="${t}">
+      <div class="ph" style="background:${avColor(x.name)}">${initials(x.name)}${x.role.startsWith('Мастер') ? `<span class="vf">${ic('check')}</span>` : ''}</div>
+      <div class="grow"><div class="role">${esc(x.role)} · ${DEPT[x.dept]}</div><div class="nm">${esc(x.name)}</div><div class="price num">${rub(x.price)} <span class="mute small">за тренировку</span></div></div>
+      ${ic('right','dim')}</button>`; }).join('')}
+      ${S.clubId === 'os' ? `<p class="demo-note">Состав тренеров «Образа Силы» — демонстрационный. В рабочей версии список придёт из CRM.</p>` : ''}
+    </div>`;
+}
+function openTrainer(tid){
+  const x = TR[tid]; let sel = null;
+  const slots = trainerSlots(tid);
+  const ptFree = S.contract && S.contract.ptLeft > 0;
+  const html = `${pageHead(x.role)}
+    <div class="scroll">
+      <div class="g" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding-top:8px">
+        <div class="bigav" style="background:${avColor(x.name)};color:#fff;width:104px;height:104px;font-size:34px;border-radius:30px">${initials(x.name)}</div>
+        <h1 class="h1">${esc(x.name)}</h1>
+        <div class="row" style="justify-content:center;flex-wrap:wrap;gap:8px"><span class="pill info">${DEPT[x.dept]}</span><span class="pill plain" style="background:var(--s2)">${rub(x.price)} / 60 мин</span></div>
+      </div>
+      <div class="g" style="margin-top:20px"><p class="mute">${esc(DEPT_ABOUT[x.dept])}</p></div>
+      <section class="sec g"><h2 class="h2">Свободное время</h2>
+        ${slots.map(d => `<div><div class="small mute" style="margin-bottom:8px;font-weight:700">${d.off === 0 ? 'Сегодня' : d.off === 1 ? 'Завтра' : DOWL[d.d.getDay()]}, ${dfmt(d.d)}</div>
+          <div class="row" style="flex-wrap:wrap;gap:8px">${d.s.length ? d.s.map(t => `<button class="chip slot" data-key="${iso(d.d)}" data-t="${t}">${t}</button>`).join('') : '<span class="small dim">Нет свободных окон</span>'}</div></div>`).join('')}
+      </section>
+    </div>
+    <div class="footer g"><div class="paybar"><div class="grow"><b id="ptPrice">${ptFree ? 'По абонементу' : rub(x.price)}</b><small id="ptWhen">${ptFree ? `Осталось персональных: ${S.contract.ptLeft}` : 'Выберите время'}</small></div><button class="btn club" id="ptBook" disabled>Записаться</button></div></div>`;
+  open('page', html, el => {
+    el.addEventListener('click', e => {
+      const s = e.target.closest('.slot');
+      if (s){ el.querySelectorAll('.slot').forEach(b => b.classList.remove('on')); s.classList.add('on'); sel = { key:s.dataset.key, t:s.dataset.t }; const d = parse(sel.key); $('#ptWhen', el).textContent = `${dfmt(d)}, ${sel.t}`; $('#ptBook', el).disabled = false; }
+      if (e.target.closest('#ptBook') && sel){
+        if (needAuth()) return;
+        const id = `pt|${tid}|${sel.key}|${sel.t}`, s = sel;
+        const fin = paid => {
+          S.bookings.push({ id, type:'pt', tid, key:s.key, t:s.t, name:'Персональная тренировка', sub:`${x.name} · ${CLUBS[S.clubId].short}`, club:S.clubId });
+          if (ptFree) S.contract.ptLeft -= 1; else addPoints(Math.round(x.price * .1), `Кешбэк: персональная с ${x.name}`);
+          notify('Вы записаны на персональную тренировку', `${x.name}, ${dfmt(parse(s.key))} в ${s.t}`);
+          save(); close(); if (paid) close(); toast(`Записали: ${dfmt(parse(s.key))}, ${s.t}`); refresh();
+        };
+        ptFree ? fin(false) : payFlow(x.price, () => fin(true));
+      }
+    });
+  });
+}
+
+// ----- PROFILE -----
+function meView(){
+  const u = S.user, st = cstate(), c = S.contract;
+  if (isGuest()) return guestMeView();
+  let card = '';
+  if (c){
+    const cl = CLUBS[c.club], def = contractDef(c.id) || {};
+    const total = Math.max(1, daysBetween(parse(c.start), parse(c.end))), passed = Math.min(total, Math.max(0, daysBetween(parse(c.start), T0)));
+    const pill = { active:['ok','Активен'], ending:['warn',`Осталось ${st.left} ${plural(st.left,['день','дня','дней'])}`], expired:['bad','Истёк'], frozen:['info','Заморожен'], guest:['info','Гостевой визит'] }[st.k];
+    card = `<div class="contract"><span class="glow"></span>
+      <div class="row"><div class="grow"><div class="small mute">${esc(cl.name)} · ${esc(cl.short)}</div><div class="cname">${esc(c.name)}</div></div><span class="pill ${pill[0]}">${pill[1]}</span></div>
+      ${c.kind === 'guest' ? `<p class="small mute">Покажите паспорт на ресепшене — администратор активирует пропуск. QR для входа появится в разделе «Вход в клуб».</p>` : `
+      <div><div class="row small" style="justify-content:space-between;margin-bottom:6px"><span class="mute">${dfmtY(parse(c.start))}</span><span class="mute">до ${dfmtY(parse(c.end))}</span></div><div class="progress"><i style="width:${Math.round(passed / total * 100)}%"></i></div></div>
+      ${c.freeze ? `<p class="small">Заморозка: ${dfmt(parse(c.freeze.from))} — ${dfmt(parse(c.freeze.to))}</p>` : ''}
+      <div class="kv"><div><b class="num">${c.ptLeft}</b><small>персональных тренировок</small></div><div><b class="num">${c.guestLeft}</b><small>гостевых визитов</small></div><div><b class="num">${c.freezeLeft}</b><small>дней заморозки</small></div></div>
+      <div class="row"><button class="btn sm ghost grow" data-act="freeze">${ic('snow')} Заморозить</button><button class="btn sm club grow" data-act="renew">Продлить</button></div>`}
+    </div>`;
+  } else if (S.lead){
+    card = `<div class="contract"><span class="glow"></span><div class="small mute">${esc(CLUBS[S.lead.club].name)}</div><div class="cname">${esc(S.lead.name)}</div><span class="pill info" style="align-self:flex-start">Заявка у менеджера</span><p class="small mute">Менеджер позвонит на ${esc(u.phone)} и подберёт условия. Можно написать в чат.</p><button class="btn sm ghost" data-act="chat">${ic('chat')} Написать менеджеру</button></div>`;
+  } else {
+    card = `<div class="contract"><span class="glow"></span><div class="cname">Абонемент не оформлен</div><p class="small mute">Выберите абонемент — оформление займёт пару минут.</p><button class="btn sm club" data-act="renew" style="align-self:flex-start">Выбрать абонемент</button></div>`;
+  }
+  const li = (act, icon, t, extra = '') => `<button class="li" data-act="${act}">${ic(icon)}<span class="grow">${t}</span>${extra}${ic('right','chev')}</button>`;
+  return `<div class="g">
+    <div class="me-hd"><div class="grow"><h1>Привет, <span class="accent">${esc(u.first)}</span></h1>
+      <button class="ptsline" data-act="points"><b class="num">${fmt(S.points)}</b><span class="small mute">баллов лояльности</span></button></div>
+      <div class="bigav">${initials(u.first + ' ' + (u.last || ''))}</div></div>
+    <div style="margin-top:20px">${card}</div>
+    <button class="btn block ghost" data-act="qr" style="margin-top:12px">${ic('qr')} Карта клиента · ${esc(u.id)}</button>
+    ${installBtn() ? `<div style="margin-top:12px">${installBtn()}</div>` : ''}
+    <h2 class="list-title">Полезное</h2>
+    <div class="list">
+      ${li('notifs','bell','Уведомления', !S.read && S.notifs.length ? `<span class="badge-n">${S.notifs.length}</span>` : '')}
+      ${li('myBookings','cal','Мои записи', futureBookings().length ? `<span class="val">${futureBookings().length}</span>` : '')}
+      ${li('purchases','receipt','Мои покупки')}
+      ${li('points','coins','Баллы лояльности', `<span class="val num">${fmt(S.points)}</span>`)}
+      ${li('invite','gift','Пригласи друзей')}
+      ${li('faq','help','Вопросы и ответы')}
+      ${li('review','star','Оставить отзыв')}
+      ${li('contacts','pin','Контакты клуба')}
+    </div>
+    <h2 class="list-title">Настройки</h2>
+    <div class="list">
+      ${li('pickClub','pin','Мой клуб', `<span class="val">${esc(club().short)}</span>`)}
+      ${li('payMethod','card','Способ оплаты')}
+      ${li('privacy','shield','Уведомления и приватность')}
+      ${li('lang','globe','Язык', '<span class="val">Русский</span>')}
+      ${li('deleteAcc','trash','Удалить аккаунт')}
+      ${li('logout','logout','Выйти')}
+    </div>
+    <div class="demo-note">Демо-версия: данные вымышленные, платежи не проводятся. Прогресс хранится только в этом браузере. <button class="link" data-act="reset" style="text-decoration:underline">Сбросить демо</button></div>
+  </div>`;
+}
+
+function guestMeView(){
+  const li = (act, icon, t, extra = '') => `<button class="li" data-act="${act}">${ic(icon)}<span class="grow">${t}</span>${extra}${ic('right','chev')}</button>`;
+  return `<div class="g">
+    <div class="me-hd"><div class="grow"><h1>Привет, <span class="accent">гость</span></h1><p class="small mute" style="margin-top:6px">Вы ещё не вошли в аккаунт</p></div><div class="bigav">${ic('user')}</div></div>
+    <div class="contract" style="margin-top:20px"><span class="glow"></span><div class="cname">Станьте клиентом «Команды Первых»</div><p class="small mute">Абонемент, запись на занятия, вход по QR, баллы и подарок от клуба после регистрации.</p>
+      <div class="row"><button class="btn sm club grow" data-act="authNew">Зарегистрироваться</button><button class="btn sm ghost grow" data-act="authLogin">Я уже клиент</button></div></div>
+    ${installBtn() ? `<div style="margin-top:12px">${installBtn()}</div>` : ''}
+    <h2 class="list-title">Полезное</h2>
+    <div class="list">${li('faq','help','Вопросы и ответы')}${li('contacts','pin','Контакты клуба')}${li('pickClub','pin','Мой клуб', `<span class="val">${esc(club().short)}</span>`)}</div>
+  </div>`;
+}
+
+// ----- feature pages -----
+function openQR(){
+  const st = cstate(), u = S.user;
+  if (!['active','ending'].includes(st.k)){
+    const msg = st.k === 'guest' ? 'Гостевой пропуск активирует администратор после проверки паспорта.' : st.k === 'frozen' ? 'Абонемент заморожен. Разморозьте его, чтобы пройти в клуб.' : st.k === 'lead' ? 'Пропуск появится после оформления абонемента. Менеджер уже получил заявку.' : 'Для входа нужен действующий абонемент.';
+    open('sheet', `${sheetHead('Вход в клуб')}<div class="scroll g"><div class="empty">${ic('qr')}<b>QR недоступен</b><span>${msg}</span></div></div><div class="footer g">${st.k === 'frozen' ? '<button class="btn block" data-act="freeze">Управлять заморозкой</button>' : st.k === 'lead' ? '<button class="btn block" data-act="chat">Написать менеджеру</button>' : st.k === 'guest' ? '<button class="btn block ghost" data-act="close">Понятно</button>' : '<button class="btn block" data-act="renew">Выбрать абонемент</button>'}</div>`);
+    return;
+  }
+  const PERIOD = 30;
+  const html = `${sheetHead('Вход в клуб')}
+    <div class="scroll g" style="display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center">
+      <div class="qrbox"><div id="qrSlot" style="width:100%"></div>
+        <div class="timer"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#E4DDD6" stroke-width="3"/><circle id="qrRing" cx="10" cy="10" r="8" fill="none" stroke="#2F5BFF" stroke-width="3" stroke-dasharray="50.27" stroke-dashoffset="0" stroke-linecap="round"/></svg><span>Код обновится через <b id="qrSec">30</b> с</span></div>
+      </div>
+      <div><b style="font-size:17px">${esc(u.first)} ${esc(u.last || '')}</b><div class="small mute">${esc(S.contract.name)} · клиент ${esc(u.id)}</div></div>
+      <p class="hint" style="max-width:30ch">Поднесите экран к сканеру турникета. Яркость экрана лучше увеличить.</p>
+    </div>`;
+  open('sheet', html, el => {
+    const draw = () => {
+      const slot = Math.floor(Date.now() / (PERIOD * 1000));
+      $('#qrSlot', el).innerHTML = qrSVG(`KP1:${u.id.replace(/\D/g,'')}:${slot}`);
+    };
+    const tick = () => {
+      const left = PERIOD - Math.floor(Date.now() / 1000) % PERIOD;
+      $('#qrSec', el).textContent = left;
+      $('#qrRing', el).setAttribute('stroke-dashoffset', String(50.27 * (1 - left / PERIOD)));
+      if (left === PERIOD) draw();
+    };
+    draw(); tick();
+    const t = setInterval(tick, 1000);
+    return () => clearInterval(t);
+  });
+}
+function qrSVG(text){
+  if (!window.qrcode) return `<div class="qr-fallback">${esc(text)}</div>`;
+  const q = qrcode(0, 'M'); q.addData(text); q.make();
+  const n = q.getModuleCount(); let p = '';
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) p += `M${c},${r}h1v1h-1z`;
+  return `<svg class="qr" viewBox="-1 -1 ${n + 2} ${n + 2}" shape-rendering="crispEdges" role="img" aria-label="QR-код для входа"><rect x="-1" y="-1" width="${n + 2}" height="${n + 2}" fill="#FFFFFF"/><path d="${p}" fill="#100E0D"/></svg>`;
+}
+
+function openShop(tab){
+  UI.shopTab = tab || UI.shopTab;
+  const c = club();
+  const body = () => UI.shopTab === 'shop'
+    ? `<div class="grid2">${PRODUCTS.map(p => `<button class="prod" data-act="product" data-id="${p.id}"><div class="art tone-${p.tone}">${ic(p.icon)}</div><div class="info"><b>${esc(p.n)}</b><small>${esc(p.sub)}</small><div class="pr num">${rub(p.price)} <span>+${fmt(Math.round(p.price * .1))} баллов</span></div></div></button>`).join('')}</div>`
+    : `<div class="grid2">${MINI[S.clubId].map(m => { const joined = S.minis.includes(m.id); return `<button class="prod" data-act="miniOpen" data-id="${m.id}"><div class="art tone-${m.tone}">${ic(m.icon)}<span class="spots">${joined ? 'Вы в группе' : `осталось ${m.spots} ${plural(m.spots,['место','места','мест'])}`}</span></div><div class="info"><b>${esc(m.n)}</b><small>${esc(m.when)}<br>${esc(m.start)}</small><div class="pr num">${rub(m.price)} <span>/ ${esc(m.per)}</span></div></div></button>`; }).join('')}</div>`;
+  const el = open('page', `${pageHead(`${c.short}`)}
+    <div class="g" style="padding-bottom:12px"><div class="seg"><button data-tab="shop" class="${UI.shopTab === 'shop' ? 'on' : ''}">Магазин</button><button data-tab="mini" class="${UI.shopTab === 'mini' ? 'on' : ''}">Мини-группы</button></div></div>
+    <div class="scroll g" id="shopBody">${body()}</div>`, el => {
+    el.addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (!b) return; UI.shopTab = b.dataset.tab; el.querySelectorAll('[data-tab]').forEach(x => x.classList.toggle('on', x === b)); $('#shopBody', el).innerHTML = body(); });
+  });
+  el._rerender = () => { $('#shopBody', el).innerHTML = body(); };
+}
+function openProduct(id){
+  const p = PRODUCTS.find(x => x.id === id); let qty = 1, usePts = false;
+  open('sheet', `${sheetHead('Товар')}
+    <div class="scroll g">
+      <div class="art tone-${p.tone}" style="border-radius:20px;aspect-ratio:2/1">${ic(p.icon)}</div>
+      <h3 class="h3" style="margin-top:16px">${esc(p.n)}</h3>
+      <p class="mute">${esc(p.sub)} · выдача на ресепшене или в фитнес-баре клуба ${esc(club().short)}</p>
+      <div class="row" style="margin-top:16px;justify-content:space-between"><span class="mute">Количество</span><div class="stepper"><button data-q="-1" aria-label="Меньше">${ic('minus')}</button><b id="q" class="num">1</b><button data-q="1" aria-label="Больше">${ic('plus')}</button></div></div>
+      <button class="row" id="ptsT" style="margin-top:16px;width:100%;justify-content:space-between;text-align:left"><span><b>Списать баллы</b><br><span class="small mute">Доступно ${fmt(S.points)} · до 50% стоимости</span></span><span class="switch" id="sw"></span></button>
+    </div>
+    <div class="footer g"><div class="paybar"><div class="grow"><b id="tot" class="num"></b><small id="totS"></small></div><button class="btn club" id="buy">Оплатить</button></div></div>`, el => {
+    const calc = () => { const sum = p.price * qty; const off = usePts ? Math.min(S.points, Math.floor(sum / 2)) : 0; return { sum, off, pay:sum - off, earn:Math.round((sum - off) * .1) }; };
+    const upd = () => { const c = calc(); $('#q', el).textContent = qty; $('#tot', el).textContent = rub(c.pay); $('#totS', el).textContent = c.off ? `−${fmt(c.off)} баллами · +${c.earn} баллов` : `+${c.earn} баллов за покупку`; $('#sw', el).classList.toggle('on', usePts); };
+    upd();
+    el.addEventListener('click', e => {
+      const q = e.target.closest('[data-q]'); if (q){ qty = Math.max(1, Math.min(10, qty + +q.dataset.q)); upd(); }
+      if (e.target.closest('#ptsT')){ if (!S.points) return toast('На счёте пока нет баллов'); usePts = !usePts; upd(); }
+      if (e.target.closest('#buy')){
+        if (needAuth()) return;
+        const c = calc();
+        payFlow(c.pay, () => {
+          if (c.off) addPoints(-c.off, `Оплата: ${p.n}`);
+          addPoints(c.earn, `Кешбэк: ${p.n}`);
+          for (let i = 0; i < qty; i++) S.purchases.unshift({ id:'#' + (180000 + Math.floor(Math.random() * 9999)), pid:p.id, n:p.n, sub:p.sub, d:iso(new Date()), used:false, club:S.clubId });
+          save(); close(); close(); rerenderShop(); toast('Оплачено. Покупка — в «Моих покупках»'); refresh();
+        });
+      }
+    });
+  });
+}
+function openMini(id){
+  const m = MINI[S.clubId].find(x => x.id === id); const t = m.tr ? TR[m.tr] : null;
+  const joined = S.minis.includes(m.id);
+  open('sheet', `${sheetHead('Мини-группа')}
+    <div class="scroll g">
+      <div class="art tone-${m.tone}" style="border-radius:20px;aspect-ratio:2/1">${ic(m.icon)}</div>
+      <h3 class="h3" style="margin-top:16px">${esc(m.n)}</h3>
+      <div class="sumrow"><span>Расписание</span><b>${esc(m.when)}</b></div>
+      <div class="sumrow"><span>Старт</span><b>${esc(m.start)}</b></div>
+      <div class="sumrow"><span>Тренер</span><b>${esc(t ? t.name : m.trText)}</b></div>
+      <div class="sumrow"><span>Свободно</span><b>${m.spots} ${plural(m.spots,['место','места','мест'])}</b></div>
+      <div class="sumrow"><span>Стоимость</span><b class="num">${rub(m.price)} / ${esc(m.per)}</b></div>
+    </div>
+    <div class="footer g">${joined ? '<button class="btn block" disabled>Вы уже в группе</button>' : `<button class="btn block club" id="mj">Записаться · ${rub(m.price)}</button>`}</div>`, el => {
+    el.addEventListener('click', e => { if (e.target.closest('#mj') && !needAuth()) payFlow(m.price, () => { S.minis.push(m.id); addPoints(Math.round(m.price * .1), `Кешбэк: ${m.n}`); notify('Вы в мини-группе', `${m.n}: ${m.when}, ${m.start}`); save(); close(); close(); rerenderShop(); toast('Вы записаны в мини-группу'); refresh(); }); });
+  });
+}
+function rerenderShop(){ const p = STACK.find(el => el._rerender); if (p) p._rerender(); }
+function payFlow(amount, done){
+  open('sheet', `${sheetHead('Оплата')}
+    <div class="scroll g">
+      <div class="sumrow"><span>К оплате</span><b class="num" style="font-family:var(--f-display);font-size:20px">${rub(amount)}</b></div>
+      <div class="stack" style="margin-top:16px">
+        <button class="btn block" data-pay>${ic('card')} Банковской картой</button>
+        <button class="btn block ghost" data-pay>Через СБП</button>
+      </div>
+      <p class="hint" style="margin-top:14px;text-align:center">Демо: деньги не списываются. В рабочей версии здесь будет платёжная форма эквайринга клуба.</p>
+    </div>`, el => {
+    el.addEventListener('click', e => { const b = e.target.closest('[data-pay]'); if (!b || b.disabled) return; el.querySelectorAll('[data-pay]').forEach(x => x.disabled = true); b.innerHTML = '<span class="spin"></span>'; setTimeout(done, 900); });
+  });
+}
+function openPurchases(){
+  const list = S.purchases;
+  const row = p => { const pr = PRODUCTS.find(x => x.id === p.pid) || { tone:'sand', icon:'gift' }; return `<div class="row" style="padding-block:12px;border-bottom:1px solid var(--line)"><div class="art tone-${pr.tone}" style="width:64px;aspect-ratio:1;border-radius:14px;flex:none">${ic(pr.icon)}</div><div class="grow"><b>${esc(p.n)}</b><div class="small mute">${esc(p.gift ? 'Подарок от клуба' : p.sub)}</div><div class="tiny dim num">${esc(p.id)} · ${dfmt(parse(p.d))}</div></div>${p.used ? '<span class="pill plain" style="background:var(--s2)">Получено</span>' : `<button class="icon-btn" data-act="redeem" data-id="${esc(p.id)}" aria-label="Показать код">${ic('qr')}</button>`}</div>`; };
+  const un = list.filter(p => !p.used), us = list.filter(p => p.used);
+  open('page', `${pageHead('Мои покупки')}<div class="scroll g">
+    ${list.length ? `<h2 class="list-title" style="margin-top:8px">Неиспользованные</h2>${un.length ? un.map(row).join('') : '<p class="mute small">Всё получено</p>'}
+    ${us.length ? `<h2 class="list-title">Использованные</h2>${us.map(row).join('')}` : ''}` : `<div class="empty">${ic('bag')}<b>Покупок пока нет</b><span>Кофе, коктейли и товары клуба можно купить заранее</span><button class="btn sm" data-act="shop">В магазин</button></div>`}
+  </div>`);
+}
+function openRedeem(pid){
+  const p = S.purchases.find(x => x.id === pid); if (!p) return;
+  open('sheet', `${sheetHead(p.n)}<div class="scroll g" style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center"><div class="qrbox">${qrSVG('KPBUY:' + p.id.replace('#',''))}<b class="num" style="color:var(--qr-ink)">${esc(p.id)}</b></div><p class="hint">Покажите код в фитнес-баре или на ресепшене</p></div>
+    <div class="footer g"><button class="btn block ghost" id="rd">Отметить как полученное</button></div>`, el => {
+    el.addEventListener('click', e => { if (e.target.closest('#rd')){ p.used = true; save(); close(); close(); openPurchases(); toast('Отмечено как полученное'); refresh(); } });
+  });
+}
+
+function openLocker(){
+  const L = S.locker;
+  if (L){
+    open('page', `${pageHead('Мой шкафчик')}<div class="scroll g" style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding-top:30px">
+      <span class="eyebrow mute">${esc(L.zone)} · ${esc(CLUBS[L.club].short)}</span><div class="locker-big num">№ ${L.num}</div>
+      <p class="mute">${L.until ? `Забронирован до ${dfmtY(parse(L.until))}` : 'Забронирован на сегодня'}</p>
+      </div><div class="footer g"><button class="btn block danger" data-act="lockFree">Освободить шкафчик</button></div>`);
+    return;
+  }
+  const zones = S.clubId === 'os' ? ['Мужская','Женская','Семейная'] : ['Мужская','Женская'];
+  const st = { zone:S.user.gender === 'f' ? 'Женская' : 'Мужская', per:'day', num:null };
+  const busy = n => rng(st.zone + S.clubId + iso(T0) + n)() < .45;
+  const cells = () => Array.from({ length:48 }, (_, i) => i + 1).map(n => `<button class="cell num ${busy(n) ? 'busy' : ''} ${st.num === n ? 'on' : ''}" ${busy(n) ? 'disabled aria-disabled="true"' : ''} data-n="${n}">${n}</button>`).join('');
+  open('page', `${pageHead('Мой шкафчик')}<div class="scroll g">
+      <div class="empty" style="padding:20px 0 24px">${ic('lock')}<b>У вас нет шкафчика</b><span>Забронируйте именной шкафчик, чтобы не носить вещи с собой</span></div>
+      <div class="stack">
+        <div class="field"><label>Раздевалка</label><div class="seg" id="lz">${zones.map(z => `<button data-z="${z}" class="${z === st.zone ? 'on' : ''}">${z}</button>`).join('')}</div></div>
+        <div class="field"><label>Срок</label><div class="seg" id="lp"><button data-p="day" class="on">На сегодня · 0 ₽</button><button data-p="month">Месяц · 1 500 ₽</button></div></div>
+        <div class="field"><label>Свободные ячейки</label><div class="cells" id="lc">${cells()}</div></div>
+      </div></div>
+    <div class="footer g"><button class="btn block club" id="lb" disabled>Выберите ячейку</button></div>`, el => {
+    const upd = () => { $('#lc', el).innerHTML = cells(); const b = $('#lb', el); b.disabled = !st.num; b.textContent = st.num ? `Забронировать № ${st.num}${st.per === 'month' ? ' · 1 500 ₽' : ''}` : 'Выберите ячейку'; };
+    el.addEventListener('click', e => {
+      const z = e.target.closest('[data-z]'); if (z){ st.zone = z.dataset.z; st.num = null; el.querySelectorAll('[data-z]').forEach(x => x.classList.toggle('on', x === z)); upd(); }
+      const p = e.target.closest('[data-p]'); if (p){ st.per = p.dataset.p; el.querySelectorAll('[data-p]').forEach(x => x.classList.toggle('on', x === p)); upd(); }
+      const c = e.target.closest('.cell'); if (c && !c.disabled){ st.num = +c.dataset.n; upd(); }
+      if (e.target.closest('#lb') && st.num){
+        const fin = () => { S.locker = { club:S.clubId, zone:st.zone + ' раздевалка', num:st.num, until:st.per === 'month' ? iso(addMonths(T0, 1)) : null }; save(); close(true); toast(`Шкафчик № ${st.num} ваш`); openLocker(); };
+        st.per === 'month' ? payFlow(1500, fin) : fin();
+      }
+    });
+  });
+}
+
+function openFreeze(){
+  const c = S.contract, st = cstate();
+  if (!c || c.kind === 'guest' || st.k === 'expired'){ open('sheet', `${sheetHead('Заморозка')}<div class="scroll g"><div class="empty">${ic('snow')}<b>Заморозка недоступна</b><span>Заморозить можно действующий абонемент</span></div></div>`); return; }
+  if (c.freeze){
+    const started = parse(c.freeze.from) <= T0;
+    open('page', `${pageHead('Заморозка')}<div class="scroll g" style="padding-top:20px"><div class="contract"><span class="glow"></span><div class="cname">Абонемент заморожен</div><div class="sumrow"><span>С</span><b>${dfmtY(parse(c.freeze.from))}</b></div><div class="sumrow"><span>По</span><b>${dfmtY(parse(c.freeze.to))}</b></div><div class="sumrow" style="border:0"><span>Новый срок окончания</span><b>${dfmtY(parse(c.end))}</b></div></div></div>
+      <div class="footer g"><button class="btn block ${started ? 'ghost' : 'danger'}" data-act="unfreeze">${started ? 'Разморозить досрочно' : 'Отменить заморозку'}</button></div>`);
+    return;
+  }
+  if (!c.freezeLeft){ open('sheet', `${sheetHead('Заморозка')}<div class="scroll g"><div class="empty">${ic('snow')}<b>Нет дней заморозки</b><span>По условиям вашего абонемента заморозка оформляется через менеджера</span></div></div><div class="footer g"><button class="btn block" data-act="chat">Написать менеджеру</button></div>`); return; }
+  const max = c.freezeLeft, min = Math.min(7, max);
+  let days = Math.min(14, max), from = iso(addDays(T0, 1));
+  open('page', `${pageHead('Заморозка')}<div class="scroll g stack" style="padding-top:8px">
+      <p class="mute">Доступно ${max} ${plural(max,['день','дня','дней'])}. Срок абонемента продлится на время заморозки.</p>
+      <div class="field"><label for="fz-from">Начало</label><input class="input" type="date" id="fz-from" min="${iso(T0)}" max="${c.end}" value="${from}"></div>
+      <div class="field"><label for="fz-days">Длительность: <b id="fzd" class="num" style="color:var(--fg)">${days}</b> дн.</label><input type="range" id="fz-days" min="${min}" max="${max}" value="${days}" style="accent-color:var(--blue);width:100%"></div>
+      <div class="card"><div class="sumrow"><span>Заморожен до</span><b id="fzto"></b></div><div class="sumrow" style="border:0"><span>Новый срок окончания</span><b id="fzend"></b></div></div>
+    </div><div class="footer g"><button class="btn block club" id="fzgo">Заморозить</button></div>`, el => {
+    const upd = () => { const f = parse(from); $('#fzd', el).textContent = days; $('#fzto', el).textContent = dfmtY(addDays(f, days - 1)); $('#fzend', el).textContent = dfmtY(addDays(parse(c.end), days)); };
+    upd();
+    $('#fz-from', el).addEventListener('change', e => { if (e.target.value) { from = e.target.value; upd(); } });
+    $('#fz-days', el).addEventListener('input', e => { days = +e.target.value; upd(); });
+    $('#fzgo', el).addEventListener('click', () => { const f = parse(from); c.freeze = { from, to:iso(addDays(f, days - 1)), days }; c.freezeLeft -= days; c.end = iso(addDays(parse(c.end), days)); notify('Абонемент заморожен', `С ${dfmt(f)} по ${dfmt(addDays(f, days - 1))}`); save(); close(); toast('Заморозка оформлена'); refresh(); });
+  });
+}
+
+function openContracts(){
+  const cid = S.clubId; const list = CONTRACTS[cid]; let i = Math.max(0, list.findIndex(c => c.badge === 'Рекомендуем'));
+  open('page', `${pageHead('Выберите абонемент')}<div class="scroll" id="cpick">${contractPicker(cid)}</div>
+    <div class="footer g"><div class="paybar"><div class="grow"><b id="cpPrice"></b><small id="cpSub"></small></div><button class="btn club" id="cpGo">Далее</button></div></div>`, el => {
+    const sel = k => { i = k; const c = list[i]; $('#cpPrice', el).textContent = priceLabel(c); $('#cpSub', el).textContent = c.price === null ? 'Условия подберёт менеджер' : c.unit === '₽/мес' ? 'Первый платёж, далее ежемесячно' : 'Единый платёж'; $('#cpGo', el).textContent = c.price === null ? 'Получить предложение' : c.price === 0 ? 'Записаться' : 'Оплатить'; };
+    mountPicker(el, list, i, sel);
+    $('#cpGo', el).addEventListener('click', () => {
+      const def = list[i];
+      if (def.price === null){ S.lead = { club:cid, id:def.id, name:def.name }; notify('Заявка отправлена', `${def.name}: менеджер свяжется с вами`); S.chat.push({ from:'me', text:`Хочу абонемент «${def.name}» в ${CLUBS[cid].name}`, d:Date.now() }); save(); close(); toast('Заявка у менеджера'); refresh(); return; }
+      const fin = () => { S.contract = makeContract(def, cid); S.lead = null; notify('Абонемент оформлен', `${def.name}, ${CLUBS[cid].name}`); save(); close(true); toast(def.price === 0 ? 'Вы записаны — ждём в клубе' : 'Абонемент оформлен'); refresh(); };
+      def.price === 0 ? fin() : payFlow(def.price, fin);
+    });
+  });
+}
+function contractPicker(cid, selId){
+  const list = CONTRACTS[cid];
+  return `<div class="cc-track" id="cct">${list.map((c, k) => `<button class="cc" data-k="${k}">
+      ${c.badge ? `<span class="cc-badge">${esc(c.badge)}</span>` : ''}
+      <h3>${esc(c.name)}</h3><div class="cc-sub">${esc(c.sub)}</div>
+      <div class="cc-price">${c.old ? `<span class="disc">−${Math.round((1 - c.price / c.old) * 100)}%</span>` : ''}<b class="num">${esc(priceLabel(c))}</b>${c.old ? `<s class="num">${rub(c.old)}</s>` : ''}</div>
+    </button>`).join('')}</div>
+    <div class="g" id="ccf"></div>`;
+}
+function mountPicker(el, list, start, onSel){
+  const sc = $('#cct', el), cards = [...sc.children];
+  const setOn = k => { cards.forEach((c, j) => c.classList.toggle('on', j === k)); $('#ccf', el).innerHTML = list[k].feats.map(f => `<div class="feat"><span>${esc(f)}</span><span class="ok">${ic('check')}</span></div>`).join(''); onSel(k); };
+  let cur = -1;
+  const pick = () => { const mid = sc.scrollLeft + sc.clientWidth / 2; let best = 0, bd = 1e9; cards.forEach((c, j) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < bd){ bd = d; best = j; } }); if (best !== cur){ cur = best; setOn(best); } };
+  let raf; sc.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(pick); }, { passive:true });
+  sc.addEventListener('click', e => { const b = e.target.closest('.cc'); if (b){ const c = cards[+b.dataset.k]; sc.scrollTo({ left:c.offsetLeft - (sc.clientWidth - c.offsetWidth) / 2, behavior:'smooth' }); } });
+  requestAnimationFrame(() => { const c = cards[start]; sc.scrollLeft = c.offsetLeft - (sc.clientWidth - c.offsetWidth) / 2; cur = start; setOn(start); });
+}
+
+function openNotifs(){
+  S.read = true; save();
+  open('page', `${pageHead('Уведомления')}<div class="scroll g">${S.notifs.length ? S.notifs.map(n => `<div class="row" style="align-items:flex-start;padding-block:14px;border-bottom:1px solid var(--line)"><div class="icon-btn" style="flex:none">${ic('bell')}</div><div class="grow"><b>${esc(n.t)}</b><div class="small mute">${esc(n.s)}</div><div class="tiny dim">${dfmt(parse(n.d))}</div></div></div>`).join('') : `<div class="empty">${ic('bell')}<b>Уведомлений нет</b></div>`}</div>`);
+  if (S.tab === 'home' || S.tab === 'me') renderMain(true);
+}
+function openInvite(){
+  const code = (S.user.first || 'FIT').toUpperCase().replace(/[^A-ZА-ЯЁ]/g,'').slice(0,6) + (S.user.id.replace(/\D/g,'').slice(-3));
+  open('page', `${pageHead('Пригласи друзей')}<div class="scroll g stack" style="padding-top:12px">
+    <div class="contract" style="background:var(--magenta);border:0;color:#fff"><div class="cname">Месяц фитнеса другу</div><p style="opacity:.9">Друг получает месяц в подарок, вы — 1 000 баллов, когда он оформит абонемент.</p></div>
+    <div class="field"><label>Ваш промокод</label><div class="row"><div class="input grow" style="display:flex;align-items:center;font-family:var(--f-display);letter-spacing:.06em">${esc(code)}</div><button class="btn ghost" data-act="copy" data-v="${esc(code)}">${ic('copy')}</button></div></div>
+    <p class="hint">Друг вводит промокод при регистрации в приложении или называет его менеджеру в клубе.</p></div>`);
+}
+function openFAQ(){
+  const qa = [
+    ['Как пройти в клуб?','Откройте «Вход в клуб» на главной и поднесите QR-код к сканеру турникета. Код обновляется каждые 30 секунд — скриншот не сработает.'],
+    ['Как записаться на групповое занятие?','В разделе «Расписание» выберите день и занятие, нажмите «Записаться». Если мест нет — встаньте в лист ожидания.'],
+    ['Как отменить запись?','Откройте занятие в «Моих записях» и нажмите «Отменить запись». Освободившееся место получит следующий из листа ожидания.'],
+    ['Как заморозить абонемент?','Профиль → «Заморозить». Выберите дату начала и количество дней — срок абонемента продлится автоматически.'],
+    ['Можно ли привести гостя?','Да, если в абонементе есть гостевые визиты. Количество оставшихся визитов видно в профиле.'],
+    ['Как работает рассрочка 0%?','Годовой абонемент оплачивается ежемесячными платежами без переплаты. Первый платёж — при оформлении.'],
+    ['Что делать с баллами?','Оплачивайте ими до 50% покупок в магазине и фитнес-баре. Баллы начисляются за визиты, покупки, отзывы и челленджи.'],
+  ];
+  open('page', `${pageHead('Вопросы и ответы')}<div class="scroll g">${qa.map(([q, a]) => `<details><summary>${esc(q)}${ic('down')}</summary><p>${esc(a)}</p></details>`).join('')}</div>`);
+}
+function openReview(){
+  let stars = 0; const c = club();
+  open('page', `${pageHead('Оставить отзыв')}<div class="scroll g stack" style="padding-top:12px">
+    <p class="mute" style="text-align:center">Как вам ${esc(c.name)} в ${c.id === 'kp' ? 'Королёве' : 'Ховрино'}?</p>
+    <div class="stars" id="st">${[1,2,3,4,5].map(n => `<button data-s="${n}" aria-label="${n} из 5">${ic('star')}</button>`).join('')}</div>
+    <div class="field"><label for="rv">Что понравилось, что улучшить</label><textarea class="input" id="rv" placeholder="Например: чистый бассейн, хотелось бы больше утренних занятий"></textarea></div>
+    ${c.map ? `<a class="btn line block" href="${c.map}" target="_blank" rel="noopener">Отзыв на Яндекс Картах · +500 баллов</a>` : ''}
+    </div><div class="footer g"><button class="btn block club" id="rvgo" disabled>Отправить</button></div>`, el => {
+    el.addEventListener('click', e => {
+      const s = e.target.closest('[data-s]'); if (s){ stars = +s.dataset.s; el.querySelectorAll('[data-s]').forEach(b => b.classList.toggle('on', +b.dataset.s <= stars)); $('#rvgo', el).disabled = false; }
+      if (e.target.closest('#rvgo') && stars){ notify('Спасибо за отзыв', `Оценка ${stars} из 5 передана управляющему клуба`); save(); close(); toast('Отзыв отправлен'); }
+    });
+  });
+}
+function openContacts(id){
+  const c = CLUBS[id || S.clubId];
+  open('page', `${pageHead(c.name)}<div class="scroll g">
+    <div style="padding:18px 0 8px;color:${c.id === 'os' ? 'var(--sand)' : 'var(--fg)'}"><span class="mark ${c.id === 'os' ? 'mark-os' : 'mark-kp'}" style="height:22px" role="img" aria-label="${esc(c.name)}"></span></div>
+    ${c.soon ? `<span class="tag-soon">${esc(c.soon)}</span>` : ''}
+    <div class="card" style="padding-block:4px;margin-top:14px">
+      <div class="contact-row">${ic('pin')}<div class="grow"><b>${esc(c.addr)}</b><div class="small mute">${esc(c.city)}</div></div></div>
+      <div class="contact-row">${ic('clock')}<div class="grow small">${esc(c.hoursText)}</div></div>
+      <div class="contact-row">${ic('phone')}<b class="grow num">${esc(c.phone)}</b><button class="btn sm ghost" data-act="copy" data-v="${esc(c.phone)}">Копировать</button></div>
+      <div class="contact-row">${ic('tg')}<a class="grow" href="${c.tg}" target="_blank" rel="noopener"><b>Telegram-канал клуба</b></a>${ic('right','dim')}</div>
+      <div class="contact-row">${ic('users')}<a class="grow" href="${c.vk}" target="_blank" rel="noopener"><b>Сообщество ВКонтакте</b></a>${ic('right','dim')}</div>
+    </div>
+    <h2 class="list-title">В клубе</h2>
+    <div class="row" style="flex-wrap:wrap;gap:8px">${c.feats.map(f => `<span class="chip" style="height:30px;display:inline-flex;align-items:center">${esc(f)}</span>`).join('')}</div>
+    ${c.id !== S.clubId ? `<button class="btn block club" style="margin-top:24px" data-act="setClub" data-id="${c.id}">Сделать моим клубом</button>` : ''}
+  </div>`);
+}
+function openChat(){
+  if (!S.chat.length) S.chat.push({ from:'club', text:`Здравствуйте! Я менеджер клуба «${club().name}». Помогу с абонементом, заморозкой и записью — пишите.`, d:Date.now() });
+  const msgs = () => S.chat.map(m => `<div class="msg ${m.from}">${esc(m.text)}<small>${new Date(m.d).toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' })}</small></div>`).join('');
+  open('page', `${pageHead('Менеджер клуба')}<div class="scroll g" id="cs"><div class="msgs" id="ms">${msgs()}</div></div>
+    <div class="footer g"><form class="composer" id="cf"><input class="input" id="ci" placeholder="Сообщение" autocomplete="off" aria-label="Сообщение"><button class="send" aria-label="Отправить">${ic('send')}</button></form></div>`, el => {
+    const sc = $('#cs', el); const down = () => sc.scrollTop = sc.scrollHeight; down();
+    let t;
+    $('#cf', el).addEventListener('submit', e => {
+      e.preventDefault(); const v = $('#ci', el).value.trim(); if (!v) return;
+      S.chat.push({ from:'me', text:v, d:Date.now() }); $('#ci', el).value = ''; $('#ms', el).innerHTML = msgs(); down(); save();
+      t = setTimeout(() => { S.chat.push({ from:'club', text:'Спасибо, сообщение получили. Менеджер ответит в течение 15 минут в рабочее время клуба.', d:Date.now() }); save(); if ($('#ms', el)){ $('#ms', el).innerHTML = msgs(); down(); } }, 1200);
+    });
+    return () => clearTimeout(t);
+  });
+}
+function openPoints(){
+  open('page', `${pageHead('Баллы лояльности')}<div class="scroll g">
+    <div style="text-align:center;padding:20px 0"><div class="locker-big num" style="font-size:52px">${fmt(S.points)}</div><div class="mute">баллов на счёте · 1 балл = 1 ₽</div></div>
+    <button class="btn block ghost" data-act="shop">Потратить в магазине</button>
+    <h2 class="list-title">История</h2>
+    ${S.pointsLog.length ? S.pointsLog.map(l => `<div class="sumrow"><span>${esc(l.why)}<br><span class="tiny dim">${dfmt(parse(l.d))}</span></span><b class="num" style="color:${l.n > 0 ? 'var(--ok)' : 'var(--fg)'}">${l.n > 0 ? '+' : ''}${fmt(l.n)}</b></div>`).join('') : '<p class="mute small">Пока пусто</p>'}
+  </div>`);
+}
+function openPickClub(){
+  open('sheet', `${sheetHead('Выберите клуб')}<div class="scroll g stack">${Object.values(CLUBS).map(c => `<button class="clubcard ${S.clubId === c.id ? 'on' : ''}" data-act="setClub" data-id="${c.id}">
+      <div class="row"><span class="mark ${c.id === 'os' ? 'mark-os' : 'mark-kp'}" role="img" aria-label="${esc(c.name)}" style="${c.id === 'kp' ? 'color:var(--fg)' : ''}"></span><span class="grow"></span>${S.clubId === c.id ? `<span class="pill info plain">Ваш клуб</span>` : ''}</div>
+      <div><b>${esc(c.short)}</b> <span class="small mute">· ${esc(c.addr)}</span></div>
+      ${c.soon ? `<span class="tag-soon" style="align-self:flex-start">${esc(c.soon)}</span>` : ''}
+    </button>`).join('')}</div>`);
+}
+function openSimple(title, body, footer = ''){ open('page', `${pageHead(title)}<div class="scroll g">${body}</div>${footer ? `<div class="footer g">${footer}</div>` : ''}`); }
+
+// ---------- ONBOARDING ----------
+let O = { step:'splash', club:'kp', ci:0, f:{ g:'m', name:'', dob:'', promo:'', email:'', phone:'' }, mode:'new', sent:false };
+const OB_STEPS = ['club','contract','data','contact','code','pay'];
+function renderOnb(){
+  clearTimers(); document.documentElement.dataset.club = O.club;
+  const s = O.step;
+  if (s === 'splash') return obSplash();
+  const idx = OB_STEPS.indexOf(s);
+  const prog = O.mode === 'login' ? (s === 'code' ? 1 : .5) : (idx + 1) / OB_STEPS.length;
+  const head = `<div class="ph-head g"><button class="ib" data-act="obBack" aria-label="Назад">${ic('back')}</button><div class="progress-top"><i style="width:${prog * 100}%"></i></div><button class="skip" data-act="obSkip">Пропустить</button></div>`;
+  const f = { club:obClub, contract:obContract, data:obData, contact:obContact, code:obCode, pay:obPay }[s];
+  screen.innerHTML = head + f();
+  if (s === 'contract'){ const list = CONTRACTS[O.club]; mountPicker(screen, list, O.ci, k => { O.ci = k; const c = list[k]; $('#obPrice').textContent = priceLabel(c); $('#obSub').textContent = c.price === null ? 'Условия подберёт менеджер' : c.unit === '₽/мес' ? 'Первый платёж' : c.price === 0 ? 'Без оплаты' : 'Единый платёж'; }); }
+  if (s === 'code' && O.sent) startResend();
+  const inp = screen.querySelector('input'); if (inp && s !== 'data') setTimeout(() => inp.focus({ preventScroll:true }), 250);
+}
+function obSplash(){
+  screen.innerHTML = `<div class="ob-splash g">
+    <span class="ring" style="width:440px;height:440px;right:-230px;bottom:150px;border:2px solid var(--blue)"></span>
+    <span class="ring" style="width:210px;height:210px;right:-50px;bottom:230px;background:var(--blue)"></span>
+    <span class="ring" style="width:110px;height:110px;left:-36px;bottom:250px;background:var(--wine)"></span>
+    <div>
+      <div class="row" style="justify-content:space-between"><span class="eyebrow mute">Сеть фитнес-клубов</span><button class="skip" data-act="obSkip" style="margin-right:-12px">Пропустить</button></div>
+      <h1 style="margin-top:14px"><span class="mark mark-kp" style="width:100%;max-width:340px;height:auto;color:var(--fg)" role="img" aria-label="Команда Первых"></span></h1>
+      <p class="mute" style="margin-top:16px;max-width:30ch">Абонементы, расписание, запись к тренерам и вход в клуб по QR — в одном приложении.</p>
+    </div>
+    <div class="stack">
+      <div class="row small mute" style="gap:16px;flex-wrap:wrap"><span class="row" style="gap:6px">${ic('pin')}Королёв</span><span class="row" style="gap:6px">${ic('pin')}Москва, Ховрино</span></div>
+      <button class="btn block" data-act="obNew">Стать клиентом</button>
+      <button class="btn block ghost" data-act="obLogin">Я уже клиент</button>
+      ${installBtn()}
+      <p class="tiny dim" style="text-align:center">Демо-версия · данные и платежи вымышленные</p>
+    </div></div>`;
+}
+function obClub(){
+  return `<div class="scroll g stack"><h1 class="h1" style="text-align:center;margin-block:8px 6px">Выберите клуб</h1>
+    ${Object.values(CLUBS).map(c => `<button class="clubcard ${O.club === c.id ? 'on' : ''}" data-act="obClub" data-id="${c.id}">
+      <div class="row"><span class="mark ${c.id === 'os' ? 'mark-os' : 'mark-kp'}" role="img" aria-label="${esc(c.name)}" style="${c.id === 'kp' ? 'color:var(--fg)' : ''}"></span><span class="grow"></span>${c.soon ? `<span class="tag-soon">скоро «Команда Первых»</span>` : ''}</div>
+      <div><b>${esc(c.city)}</b> <span class="small mute">· ${esc(c.addr)}</span></div>
+      <div class="feats">${c.feats.map(f => `<span>${esc(f)}</span>`).join('')}</div>
+    </button>`).join('')}</div>
+    <div class="footer g"><button class="btn block" data-act="obNext">Далее</button></div>`;
+}
+function obContract(){
+  return `<div class="scroll"><h1 class="h1" style="text-align:center;margin-block:8px 0" >Выберите абонемент</h1><p class="small mute" style="text-align:center;margin-top:4px">${esc(CLUBS[O.club].name)} · ${esc(CLUBS[O.club].short)}</p>${contractPicker(O.club)}</div>
+    <div class="footer g"><div class="paybar"><div class="grow"><b id="obPrice" class="num"></b><small id="obSub"></small></div><button class="btn" data-act="obNext">Далее</button></div></div>`;
+}
+function obFooterPrice(){ const c = CONTRACTS[O.club][O.ci]; return `<div class="paybar"><div class="grow"><b class="num">${esc(priceLabel(c))}</b><small>${esc(c.name)}</small></div><button class="btn" data-act="obNext">Далее</button></div>`; }
+function obData(){
+  return `<div class="scroll g stack"><h1 class="h1" style="text-align:center;margin-block:8px 6px">Ваши данные</h1>
+    <div class="seg"><button class="${O.f.g === 'm' ? 'on' : ''}" data-act="obG" data-g="m">Мужчина</button><button class="${O.f.g === 'f' ? 'on' : ''}" data-act="obG" data-g="f">Женщина</button></div>
+    <div class="field"><label for="f-name">Имя и фамилия</label><input class="input" id="f-name" autocomplete="name" placeholder="Евгения Иванова" value="${esc(O.f.name)}"></div>
+    <div class="field"><label for="f-dob">Дата рождения</label><input class="input" id="f-dob" type="date" max="${iso(addDays(T0,-365*14))}" value="${esc(O.f.dob)}"></div>
+    <div class="field"><label for="f-promo">Промокод друга (необязательно)</label><input class="input" id="f-promo" placeholder="Например, NIKITA582" value="${esc(O.f.promo)}"></div>
+    <div class="err" id="f-err"></div></div>
+    <div class="footer g">${obFooterPrice()}</div>`;
+}
+function obContact(){
+  const login = O.mode === 'login';
+  return `<div class="scroll g stack"><h1 class="h1" style="text-align:center;margin-block:8px 6px">${login ? 'Вход по номеру' : 'Контакты'}</h1>
+    ${login ? '' : `<div class="field"><label for="f-email">Email</label><input class="input" id="f-email" type="email" autocomplete="email" placeholder="yourname@mail.ru" value="${esc(O.f.email)}"></div>`}
+    <div class="field"><label for="f-phone">Телефон</label><input class="input num" id="f-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 900 000-00-00" value="${esc(O.f.phone)}"></div>
+    <p class="hint">Укажите номер, на который сможете получить СМС с кодом подтверждения.</p>
+    <div class="err" id="f-err"></div></div>
+    <div class="footer g">${login ? '<button class="btn block" data-act="obNext">Получить код</button>' : obFooterPrice()}</div>`;
+}
+function obCode(){
+  return `<div class="scroll g stack" style="align-items:center;text-align:center">
+    <div class="icon-btn" style="width:72px;height:72px;border-radius:50%;background:var(--club);color:var(--club-ink);margin-top:12px">${ic('phone')}</div>
+    <h1 class="h1">Подтвердите телефон</h1>
+    <p class="mute" style="max-width:30ch">${O.sent ? `Мы отправили код на <b style="color:var(--fg)">${esc(O.f.phone)}</b>` : `Отправим СМС с кодом на <b style="color:var(--fg)">${esc(O.f.phone)}</b>`}</p>
+    ${O.sent ? `<input class="input code num" id="f-code" inputmode="numeric" maxlength="4" autocomplete="one-time-code" aria-label="Код из СМС" placeholder="····">
+    <p class="hint">Демо: подойдёт любой код из 4 цифр</p><div class="err" id="f-err"></div>
+    <button class="link" id="resend" data-act="obResend" disabled>Отправить ещё раз через 59 с</button>` : ''}
+    </div><div class="footer g"><button class="btn block" data-act="${O.sent ? 'obVerify' : 'obSend'}">${O.sent ? 'Подтвердить' : 'Отправить код'}</button></div>`;
+}
+function startResend(){ let n = 59; const b = $('#resend'); TIMERS.push(setInterval(() => { n--; if (!b) return; if (n <= 0){ b.disabled = false; b.textContent = 'Отправить код ещё раз'; clearTimers(); } else b.textContent = `Отправить ещё раз через ${n} с`; }, 1000)); }
+function obPay(){
+  const c = CONTRACTS[O.club][O.ci], cl = CLUBS[O.club];
+  const lead = c.price === null;
+  return `<div class="scroll g"><h1 class="h1" style="text-align:center;margin-block:8px 16px">${lead ? 'Отправим заявку' : c.price === 0 ? 'Почти готово' : 'Оплата'}</h1>
+    <div class="sumrow"><span>Клуб</span><b>${esc(cl.name)}, ${esc(cl.short)}</b></div>
+    <div class="sumrow"><span>Абонемент</span><b>${esc(c.name)}</b></div>
+    <div class="sumrow"><span>${lead ? 'Стоимость' : c.unit === '₽/мес' ? 'Первый платёж' : 'К оплате'}</span><b class="num">${esc(priceLabel(c))}</b></div>
+    ${c.unit === '₽/мес' ? '<div class="sumrow"><span>Далее</span><b>ежемесячно, рассрочка 0%</b></div>' : ''}
+    <div class="sumrow"><span>Клиент</span><b>${esc(O.f.name)}<br><span class="small mute num">${esc(O.f.phone)}</span></b></div>
+    <p class="hint" style="margin-top:14px">${lead ? 'Менеджер клуба позвонит и подберёт условия. Заявка попадёт в CRM клуба.' : c.price === 0 ? 'Возьмите паспорт: администратор подтвердит данные и активирует пропуск.' : 'Демо: деньги не списываются. В рабочей версии — платёжная форма эквайринга клуба.'}</p>
+    </div><div class="footer g stack">${lead ? '<button class="btn block" data-act="obFinish">Отправить заявку</button>' : c.price === 0 ? '<button class="btn block" data-act="obFinish">Записаться на визит</button>' : `<button class="btn block" data-act="obFinish" data-pay="1">${ic('card')} Оплатить ${rub(c.price)}</button><button class="btn block ghost" data-act="obFinish" data-pay="1">Через СБП</button>`}</div>`;
+}
+const phoneOk = p => p.replace(/\D/g,'').length >= 11;
+function obReadInputs(){
+  const v = id => { const e = $('#' + id); return e ? e.value.trim() : null; };
+  if (v('f-name') !== null) O.f.name = v('f-name');
+  if (v('f-dob') !== null) O.f.dob = v('f-dob');
+  if (v('f-promo') !== null) O.f.promo = v('f-promo');
+  if (v('f-email') !== null) O.f.email = v('f-email');
+  if (v('f-phone') !== null) O.f.phone = v('f-phone');
+}
+function obErr(t){ const e = $('#f-err'); if (e) e.textContent = t; }
+function obFinish(){
+  const parts = O.f.name.split(/\s+/);
+  S = fresh();
+  S.user = { first:parts[0] || 'Гость', last:parts.slice(1).join(' '), phone:O.f.phone, email:O.f.email, gender:O.f.g, dob:O.f.dob, id:'C-' + (100000 + Math.floor(Math.random() * 89999)) };
+  S.clubId = O.club;
+  const def = CONTRACTS[O.club][O.ci];
+  if (def.price === null) { S.lead = { club:O.club, id:def.id, name:def.name }; notify('Заявка отправлена', `${def.name}: менеджер свяжется с вами`); }
+  else { S.contract = makeContract(def, O.club); notify('Абонемент оформлен', `${def.name}, ${CLUBS[O.club].name}`); }
+  addPoints(500, 'Приветственные баллы');
+  S.purchases.push({ id:'#' + (187000 + Math.floor(Math.random() * 999)), pid:'p3', n:'Вода', sub:'0,5 л', d:iso(new Date()), used:false, gift:true, club:O.club });
+  notify('Добро пожаловать в «Команду Первых»', 'Начислили 500 приветственных баллов и подарок — воду в фитнес-баре');
+  save(); O = { ...O, step:'splash', sent:false }; renderMain();
+}
+function demoLogin(){
+  S = fresh();
+  const digits = O.f.phone.replace(/\D/g,'');
+  S.user = { first:'Никита', last:'', phone:O.f.phone, email:'', gender:'m', id:'C-1' + digits.slice(-5).padStart(5,'0') };
+  S.clubId = 'kp';
+  const c = makeContract(contractDef('kp-prem'), 'kp'); c.start = iso(addDays(T0, -356)); c.end = iso(addDays(T0, 9)); c.freezeLeft = 62; c.guestLeft = 47; c.ptLeft = 1;
+  S.contract = c;
+  S.points = 0; addPoints(500, 'Баллы за год в клубе');
+  S.joined = { steps:{ p:.38 }, visits:{ p:.5 } };
+  S.purchases.push({ id:'#187431', pid:'p3', n:'Вода', sub:'0,5 л', d:iso(new Date()), used:false, gift:true, club:'kp' });
+  const tomorrow = dayClasses('kp', 1)[2]; if (tomorrow) S.bookings.push({ id:tomorrow.id, type:'cls', key:tomorrow.key, t:tomorrow.t, name:tomorrow.n, sub:`${tomorrow.trainer.name} · ${tomorrow.room}`, club:'kp' });
+  notify('Абонемент заканчивается через 9 дней', 'Продлите «Премиум» сейчас — сохраним текущую цену');
+  notify('Акция до 31.10', '100 визитов за 3 334 ₽ в месяц');
+  notify('День открытых дверей в Ховрино', '23–26 октября вход в «Образ Силы» бесплатный');
+  save(); renderMain();
+}
+
+// ---------- actions ----------
+const AUTH_ACTS = ['qr','book','waitlist','renew','locker','freeze','invite','purchases','chat','review','payMethod','deleteAcc','chJoin','myBookings','notifs','points'];
+const ACT = {
+  close: () => close(),
+  tab: d => { S.tab = d.k; save(); renderMain(); $('#view').scrollTop = 0; },
+  goSched: d => { S.tab = 'sched'; UI.schedMode = 'all'; UI.cat = d.cat || 'all'; UI.day = 0; save(); renderMain(); },
+  pickClub: () => openPickClub(),
+  setClub: d => { S.clubId = d.id; UI.cat = 'all'; UI.dept = 'all'; save(); close(true); renderMain(); toast(`Ваш клуб: ${CLUBS[d.id].name}, ${CLUBS[d.id].short}`); },
+  notifs: () => openNotifs(),
+  qr: () => openQR(),
+  shop: () => { close(true); openShop('shop'); },
+  mini: () => openShop('mini'),
+  locker: () => openLocker(),
+  lockFree: () => { S.locker = null; save(); close(); toast('Шкафчик освобождён'); },
+  freeze: () => { close(true); openFreeze(); },
+  unfreeze: () => { const c = S.contract; const f = c.freeze; const started = parse(f.from) <= T0; const used = started ? daysBetween(parse(f.from), T0) : 0; const back = f.days - used; c.freezeLeft += back; c.end = iso(addDays(parse(c.end), -back)); c.freeze = null; save(); close(); toast(started ? 'Абонемент разморожен' : 'Заморозка отменена'); refresh(); },
+  invite: () => openInvite(),
+  giftClose: () => { S.giftClosed = true; save(); renderTab(); },
+  purchases: () => { close(true); openPurchases(); },
+  redeem: d => openRedeem(d.id),
+  contacts: d => openContacts(d.id),
+  chat: () => { close(true); openChat(); },
+  day: d => { UI.day = +d.i; renderTab(); },
+  cat: d => { UI.cat = d.k; renderTab(); },
+  dept: d => { UI.dept = d.k; renderTab(); },
+  schedMode: d => { UI.schedMode = d.k; renderTab(); },
+  cls: d => openClass(d.id),
+  book: d => { const x = findClass(d.id); if (!x) return; S.bookings.push({ id:x.id, type:'cls', key:x.key, t:x.t, name:x.n, sub:`${x.trainer.name} · ${x.room}`, club:x.clubId }); notify('Вы записаны', `${x.n}, ${dfmt(x.date)} в ${x.t}`); save(); close(); toast(`Записали: ${x.n}, ${x.t}`); refresh(); },
+  unbook: d => { S.bookings = S.bookings.filter(b => b.id !== d.id); save(); close(); toast('Запись отменена'); refresh(); },
+  waitlist: d => { close(); toast('Вы в листе ожидания — сообщим, если место освободится'); },
+  ptInfo: d => { const b = S.bookings.find(x => x.id === d.id); if (!b) return; open('sheet', `${sheetHead('Персональная тренировка')}<div class="scroll g"><h3 class="h3">${esc(TR[b.tid].name)}</h3><div class="sumrow"><span>Когда</span><b>${dfmt(parse(b.key))}, ${b.t}</b></div><div class="sumrow"><span>Клуб</span><b>${esc(CLUBS[b.club].name)}</b></div></div><div class="footer g"><button class="btn block danger" data-act="unbookPt" data-id="${esc(b.id)}">Отменить тренировку</button></div>`); },
+  unbookPt: d => { S.bookings = S.bookings.filter(b => b.id !== d.id); if (S.contract && S.contract.ptLeft < (contractDef(S.contract.id)?.pt || 0)) S.contract.ptLeft += 1; save(); close(); toast('Тренировка отменена'); refresh(); },
+  trainer: d => { close(true); openTrainer(d.id); },
+  chJoin: d => { S.joined[d.id] = { p:0 }; notify('Вы в челлендже', CHALLENGES.find(c => c.id === d.id).title); save(); renderTab(); toast('Вы участвуете! Прогресс обновляется после визитов'); },
+  chLog: d => { const ch = CHALLENGES.find(c => c.id === d.id), j = S.joined[d.id]; j.p = Math.min(1, j.p + 1 / ch.total); if (j.p >= 1 && !j.done){ j.done = true; addPoints(ch.reward, `Челлендж: ${ch.title}`); toast(`Челлендж пройден! +${ch.reward} баллов`); } save(); renderTab(); },
+  myBookings: () => { S.tab = 'sched'; UI.schedMode = 'mine'; save(); close(true); renderMain(); },
+  points: () => openPoints(),
+  faq: () => openFAQ(),
+  review: () => openReview(),
+  renew: () => { close(true); openContracts(); },
+  product: d => openProduct(d.id),
+  miniOpen: d => openMini(d.id),
+  copy: (d) => { const v = d.v; const ok = () => toast('Скопировано'); try { navigator.clipboard.writeText(v).then(ok, () => toast(v)); } catch (e) { toast(v); } },
+  payMethod: () => openSimple('Способ оплаты', `<div class="empty">${ic('card')}<b>Карта не привязана</b><span>Привяжите карту, чтобы ежемесячные платежи по рассрочке списывались автоматически</span></div>`, `<button class="btn block" data-act="payBind">Привязать карту</button>`),
+  payBind: () => toast('Привязка карты появится после подключения эквайринга'),
+  privacy: () => { open('page', `${pageHead('Уведомления и приватность')}<div class="scroll g">${[['push','Пуш-уведомления','Записи, напоминания о занятиях, абонемент'],['sms','СМС об акциях','Спецпредложения клуба'],['visible','Показывать меня в «Кто в клубе»','Другие клиенты увидят ваш инициал']].map(([k, t, s]) => `<button class="li" data-pref="${k}"><span class="grow">${t}<br><span class="small mute" style="font-weight:500">${s}</span></span><span class="switch ${S.prefs[k] ? 'on' : ''}"></span></button>`).join('')}</div>`, el => { el.addEventListener('click', e => { const b = e.target.closest('[data-pref]'); if (!b) return; const k = b.dataset.pref; S.prefs[k] = !S.prefs[k]; b.querySelector('.switch').classList.toggle('on', S.prefs[k]); save(); }); }); },
+  lang: () => openSimple('Язык', `<button class="li">${ic('check')}<span class="grow">Русский</span></button><button class="li" data-act="langEn"><span style="width:22px"></span><span class="grow">English</span><span class="val">скоро</span></button>`),
+  langEn: () => toast('Английская версия появится позже'),
+  deleteAcc: () => openSimple('Удалить аккаунт', `<p class="mute" style="padding-top:12px">Мы удалим профиль в приложении. Договор и абонемент в клубе останутся действующими — их закрывает менеджер по заявлению.</p>`, `<button class="btn block danger" data-act="deleteGo">Отправить запрос на удаление</button>`),
+  deleteGo: () => { close(); toast('Запрос отправлен. Менеджер свяжется в течение 3 дней'); },
+  reset: () => { try { localStorage.removeItem(KEY); } catch (e) {} S = fresh(); O = { step:'splash', club:'kp', ci:0, f:{ g:'m', name:'', dob:'', promo:'', email:'', phone:'' }, mode:'new', sent:false }; close(true); renderOnb(); },
+  logout: () => ACT.reset(),
+  // onboarding
+  install: () => openInstall(),
+  obSkip: () => { S = fresh(); S.user = { first:'Гость', last:'', guest:true, id:'—', gender:'m', phone:'' }; S.clubId = O.club; S.tab = 'home'; save(); O.step = 'splash'; O.sent = false; renderMain(); },
+  authNew: () => { const c = S.clubId; S = fresh(); S.clubId = c; save(); close(true); O = { ...O, club:c, mode:'new', step:'club', sent:false }; O.ci = Math.max(0, CONTRACTS[c].findIndex(x => x.badge === 'Рекомендуем')); renderOnb(); },
+  authLogin: () => { const c = S.clubId; S = fresh(); S.clubId = c; save(); close(true); O = { ...O, club:c, mode:'login', step:'contact', sent:false }; renderOnb(); },
+  obNew: () => { O.mode = 'new'; O.step = 'club'; O.ci = Math.max(0, CONTRACTS[O.club].findIndex(c => c.badge === 'Рекомендуем')); renderOnb(); },
+  obLogin: () => { O.mode = 'login'; O.step = 'contact'; renderOnb(); },
+  obClose: () => { O.step = 'splash'; O.sent = false; renderOnb(); },
+  obBack: () => {
+    obReadInputs();
+    if (O.mode === 'login'){ if (O.step === 'code' && O.sent){ O.sent = false; } else if (O.step === 'code') O.step = 'contact'; else O.step = 'splash'; return renderOnb(); }
+    if (O.step === 'code' && O.sent){ O.sent = false; return renderOnb(); }
+    const i = OB_STEPS.indexOf(O.step); O.step = i <= 0 ? 'splash' : OB_STEPS[i - 1]; renderOnb();
+  },
+  obClub: d => { O.club = d.id; O.ci = Math.max(0, CONTRACTS[d.id].findIndex(c => c.badge === 'Рекомендуем')); document.documentElement.dataset.club = d.id; document.querySelectorAll('.clubcard').forEach(b => b.classList.toggle('on', b.dataset.id === d.id)); },
+  obG: d => { O.f.g = d.g; document.querySelectorAll('[data-act="obG"]').forEach(b => b.classList.toggle('on', b.dataset.g === d.g)); },
+  obNext: () => {
+    obReadInputs();
+    if (O.step === 'club'){ O.step = 'contract'; return renderOnb(); }
+    if (O.step === 'contract'){ O.step = 'data'; return renderOnb(); }
+    if (O.step === 'data'){ if (O.f.name.split(/\s+/).filter(Boolean).length < 2) return obErr('Укажите имя и фамилию — как в паспорте'); if (!O.f.dob) return obErr('Укажите дату рождения'); O.step = 'contact'; return renderOnb(); }
+    if (O.step === 'contact'){ if (O.mode !== 'login' && O.f.email && !/^\S+@\S+\.\S+$/.test(O.f.email)) return obErr('Проверьте email — в нём должна быть «@» и домен'); if (!phoneOk(O.f.phone)) return obErr('Введите номер полностью: +7 и 10 цифр'); O.step = 'code'; O.sent = false; return renderOnb(); }
+  },
+  obSend: () => { O.sent = true; renderOnb(); },
+  obResend: () => { toast('Код отправлен повторно'); clearTimers(); const b = $('#resend'); if (b){ b.disabled = true; } startResend(); },
+  obVerify: () => { const v = ($('#f-code')?.value || '').replace(/\D/g,''); if (v.length !== 4) return obErr('Введите 4 цифры из СМС'); if (O.mode === 'login') return demoLogin(); O.step = 'pay'; O.sent = false; renderOnb(); },
+  obFinish: (d, el) => { if (d.pay){ document.querySelectorAll('[data-act="obFinish"]').forEach(b => b.disabled = true); el.innerHTML = '<span class="spin"></span>'; setTimeout(obFinish, 900); } else obFinish(); },
+};
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act]'); if (!t || t.disabled) return;
+  const fn = ACT[t.dataset.act]; if (!fn) return;
+  e.preventDefault();
+  if (AUTH_ACTS.includes(t.dataset.act) && needAuth()) return;
+  fn(t.dataset, t, e);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && STACK.length) close(); });
+document.addEventListener('input', e => { if (e.target.id === 'f-phone'){ let d = e.target.value.replace(/\D/g,''); if (d.startsWith('8')) d = '7' + d.slice(1); if (d && !d.startsWith('7')) d = '7' + d; d = d.slice(0, 11); const p = d.slice(1); let s = '+7'; if (p.length) s += ' ' + p.slice(0,3); if (p.length > 3) s += ' ' + p.slice(3,6); if (p.length > 6) s += '-' + p.slice(6,8); if (p.length > 8) s += '-' + p.slice(8,10); e.target.value = d ? s : ''; } if (e.target.id === 'f-code' && e.target.value.replace(/\D/g,'').length === 4) setTimeout(() => ACT.obVerify(), 150); });
+
+// boot
+if (S.user) renderMain(); else renderOnb();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+</script>
+</body>
+</html>
