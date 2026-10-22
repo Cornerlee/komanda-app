@@ -1,6 +1,6 @@
 // Сервис-воркер «Команды Первых»: приложение открывается без интернета.
 // При каждом обновлении файлов увеличивайте номер версии.
-const VERSION = 'kp-v1';
+const VERSION = 'kp-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
